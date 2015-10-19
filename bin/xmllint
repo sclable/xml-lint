@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/php/bootstrap.php';
 
 // invoke application
 $application = new \sclable\xmlLint\console\application\Application();
