@@ -53,6 +53,8 @@
     </target>
 
     <target name="coding-standards">
+        <echo msg="PHPCS / PHPMD for bin" />
+        <exec command="vendor/bin/sclcheck bin" checkreturn="true" passthru="true" />
         <echo msg="PHPCS / PHPMD for sources" />
         <exec command="vendor/bin/sclcheck src" checkreturn="true" passthru="true" />
         <echo msg="PHPCS / PHPMD for tests" />
