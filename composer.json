@@ -8,13 +8,14 @@
             "email": "michael.rutz@sclable.com"
         }
     ],
+    "bin": ["bin/xmllint"],
     "require": {
         "m-bymike/xml-handler": "^0.1.1",
         "symfony/console": "^2.7",
-        "behat/behat": "^3.0",
         "symfony/finder": "^2.7"
     },
     "require-dev": {
+        "behat/behat": "^3.0",
         "sclable/coding-standards": "0.1.0.2",
         "phpunit/phpunit": "^4.8"
     },
