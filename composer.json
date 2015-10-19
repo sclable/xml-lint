@@ -1,0 +1,27 @@
+{
+    "name": "sclable/xml-lint",
+    "description": "A php tool to lint and validate xml files.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Rutz",
+            "email": "michael.rutz@sclable.com"
+        }
+    ],
+    "require": {
+        "m-bymike/xml-handler": "^0.1.1",
+        "symfony/console": "^2.7",
+        "behat/behat": "^3.0",
+        "symfony/finder": "^2.7"
+    },
+    "require-dev": {
+        "sclable/coding-standards": "0.1.0.2",
+        "phpunit/phpunit": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "sclable\\xmlLint\\": "src/php/",
+            "sclable\\xmlLint\\tests\\": "tests/"
+        }
+    }
+}

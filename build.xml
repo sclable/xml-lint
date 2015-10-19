@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015, Sclable Business Solutions GmbH
+-->
+<project name="sclable/xml-lint" default="dist" basedir=".">
+
+    <!-- ============================================  -->
+    <!-- Settings                                      -->
+    <!-- ============================================  -->
+
+    <property name="version" value="0.1.0.0-dev" override="true" />
+    <property name="pkg_key" value="sclable-xml-lint" override="false" />
+
+    <property name="build-dir" value="build" />
+    <property name="build-tmp" value="${build-dir}/_build" />
+    <property name="dist-file" value="${pkg_key}.phar" />
+
+    <fileset id="sources" dir="src">
+        <include name="**/*.php" />
+    </fileset>
+
+    <filterchain id="versionInfo">
+        <replacetokens begintoken="@@" endtoken="@@">
+            <token key="version" value="${version}" />
+        </replacetokens>
+    </filterchain>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare" description="Prepare for build, reset temp dir">
+        <echo msg="prepare build directory" />
+        <delete dir="${build-tmp}" />
+        <mkdir dir="${build-tmp}" />
+        <mkdir dir="${build-tmp}/src" />
+        <delete file="${build-dir}/${dist-file}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- dist (default)                                -->
+    <!-- ============================================  -->
+    <target name="dist" depends="prepare">
+        <echo msg="not implemented ..." />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: tests                                 -->
+    <!-- ============================================  -->
+    <target name="lint">
+        <phplint haltonfailure="true">
+            <fileset refid="sources" />
+        </phplint>
+    </target>
+
+    <target name="coding-standards">
+        <echo msg="PHPCS / PHPMD for sources" />
+        <exec command="vendor/bin/sclcheck src" checkreturn="true" passthru="true" />
+        <echo msg="PHPCS / PHPMD for tests" />
+        <exec command="vendor/bin/sclcheck tests" checkreturn="true" passthru="true" />
+    </target>
+
+    <!--<target name="unittests" description="unit tests">-->
+        <!--<exec command="vendor/bin/phpunit &#45;&#45;testsuite default &#45;&#45;stop-on-failure &#45;&#45;log-junit ${build-dir}/junit.xml &#45;&#45;coverage-xml ${build-dir}/coverage" checkreturn="true" passthru="true" />-->
+        <!--<echo msg="Unit tests complete." />-->
+    <!--</target>-->
+
+    <target name="functionaltests" description="functional tests">
+        <exec command="vendor/bin/behat --no-interaction --stop-on-failure " checkreturn="true" passthru="true" />
+        <echo msg="Unit tests complete." />
+    </target>
+
+    <target name="ci" depends="lint, coding-standards, functionaltests">
+        <echo message="CI Tests completed." />
+    </target>
+
+</project>

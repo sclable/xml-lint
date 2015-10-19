@@ -1,0 +1,10 @@
+Sclable XML Lint - Changelog
+============================
+
+dev-master
+----------
+
+* cli interface
+* lint xml file
+* lint files in a directory
+* recursive option (default is 'yes')
