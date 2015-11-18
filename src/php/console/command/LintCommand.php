@@ -35,6 +35,7 @@ class LintCommand extends Command
     const COMMAND_NAME = 'lint';
     const ARGUMENT_FILE = 'file';
     const OPTION_RECURSIVE = 'recursive';
+    const OPTION_EXCLUDE   = 'exclude';
 
     /** @var OutputInterface */
     protected $output;
@@ -64,6 +65,12 @@ class LintCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'whether to scan directories recursive.',
                 true
+            )
+            ->addOption(
+                self::OPTION_EXCLUDE,
+                'e',
+                InputOption::VALUE_OPTIONAL,
+                'path(s) to exclude from linting, can be several separated by comma'
             )
         ;
     }
@@ -112,6 +119,11 @@ class LintCommand extends Command
 
         if (!$this->input->getOption(self::OPTION_RECURSIVE)) {
             $finder->depth(0);
+        }
+
+        if ($this->input->hasOption(self::OPTION_EXCLUDE)) {
+            $exclude = explode(',', $this->input->getOption(self::OPTION_EXCLUDE));
+            $finder->exclude($exclude);
         }
 
         $totalFiles = $finder->count();
