@@ -61,17 +61,21 @@
         <exec command="vendor/bin/sclcheck tests" checkreturn="true" passthru="true" />
     </target>
 
-    <!--<target name="unittests" description="unit tests">-->
-        <!--<exec command="vendor/bin/phpunit &#45;&#45;testsuite default &#45;&#45;stop-on-failure &#45;&#45;log-junit ${build-dir}/junit.xml &#45;&#45;coverage-xml ${build-dir}/coverage" checkreturn="true" passthru="true" />-->
-        <!--<echo msg="Unit tests complete." />-->
-    <!--</target>-->
+    <target name="unittests" description="unit tests">
+        <exec command="vendor/bin/phpunit --stop-on-failure --coverage-clover ${build-dir}/coverage.xml"
+              checkreturn="true" passthru="true" />
+        <echo msg="Unit tests complete." />
+        <exec command="php tests/unit/check-coverage.php ${build-dir}/coverage.xml 90"
+              checkreturn="true" passthru="true" />
+
+    </target>
 
     <target name="functionaltests" description="functional tests">
         <exec command="vendor/bin/behat --no-interaction --stop-on-failure " checkreturn="true" passthru="true" />
         <echo msg="Unit tests complete." />
     </target>
 
-    <target name="ci" depends="lint, coding-standards, functionaltests">
+    <target name="ci" depends="lint, coding-standards, unittests, functionaltests">
         <echo message="CI Tests completed." />
     </target>
 

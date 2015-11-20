@@ -21,7 +21,11 @@
 
     <filter>
         <whitelist>
-            <directory>src/</directory>
+            <directory>src/php/</directory>
+            <exclude>
+                <directory>src/php/console/</directory>
+                <file>src/php/bootstrap.php</file>
+            </exclude>
         </whitelist>
     </filter>
 
