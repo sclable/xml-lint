@@ -9,15 +9,15 @@
  */
 namespace sclable\xmlLint\console\command;
 
-use sclable\xmlLint\output\ErrorFormatter;
+use sclable\xmlLint\data\FileReport;
+use sclable\xmlLint\validator\ValidationFactory;
+use sclable\xmlLint\validator\ValidationInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use xmlHandler\exception\XMLHandlerException;
-use xmlHandler\XMLFileHandler;
 
 /**
  * Class LintCommand
@@ -43,8 +43,11 @@ class LintCommand extends Command
     /** @var InputInterface */
     protected $input;
 
-    /** @var \SplQueue */
-    protected $errorQueue;
+    /** @var ValidationInterface */
+    private $validator;
+
+    /** @var FileReport[] */
+    private $reports = [];
 
     /**
      * @inheritdoc
@@ -82,7 +85,8 @@ class LintCommand extends Command
     {
         $this->output = $output;
         $this->input = $input;
-        $this->errorQueue = new \SplQueue();
+
+        $this->validator = ValidationFactory::createDefaultCollection();
 
         $file = $input->getArgument(self::ARGUMENT_FILE);
 
@@ -90,12 +94,13 @@ class LintCommand extends Command
         if (is_dir($file)) {
             $status = $this->lintDir($file);
         } else {
-            $status = $this->lintFile($file);
+            $status = $this->lintFile(new \SplFileInfo($file));
         }
+
         $output->writeln('');
 
         if ($status === false) {
-            $this->printErrorQueue();
+            $this->printReportsOfFilesWithProblems();
             return 1;
         }
 
@@ -132,7 +137,7 @@ class LintCommand extends Command
         $ret = true;
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
-            $ret = $this->lintFile($file->getRealPath()) && $ret;
+            $ret = $this->lintFile($file) && $ret;
             if (++$counter % 30 == 0) {
                 $this->output->writeln(sprintf(
                     '    (%s/%s %s%%)',
@@ -149,51 +154,43 @@ class LintCommand extends Command
     /**
      * format and print the errors from the queue to the output
      */
-    private function printErrorQueue()
+    private function printReportsOfFilesWithProblems()
     {
         $this->output->writeln(PHP_EOL . '<error>errors:</error>');
 
-        foreach ($this->errorQueue as $error) {
-            $this->output->writeln('file: ' . $error->file);
-            $this->output->write($error->message . PHP_EOL);
+        foreach ($this->reports as $report) {
+            if ($report->hasProblems() === false) {
+                continue;
+            }
+
+            $file = $report->getFile();
+            $this->output->writeln('file: ' . $file->getPath() . DIRECTORY_SEPARATOR . $file->getFilename());
+
+            foreach ($report->getProblems() as $problem) {
+                $this->output->write(
+                    '  > ' . $problem->getMessage() . PHP_EOL
+                );
+            }
+
             $this->output->write(' - - ' . PHP_EOL);
         }
     }
 
     /**
      * lint a file, pass errors to the queue
-     * @param string $file path/to/file
+     * @param \SplFileInfo $file
      * @return bool
      */
-    private function lintFile($file)
+    private function lintFile(\SplFileInfo $file)
     {
 
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->output->write('lint file ' . $file . ' ... ');
         }
 
-        $status = false;
-        $handler = XMLFileHandler::createXmlHandlerFromFile($file);
-        try {
-            $handler->getDOMDocument();
-            $status = true;
-        } catch (XMLHandlerException $e) {
-            $msg = new \stdClass();
-            if ($handler->hasErrors()) {
-                $formatter = new ErrorFormatter($handler->getXmlErrors());
-                $formatter->setPrefix('    > ');
-                $msg->file = $file;
-                $msg->message = $formatter->getErrorsAsString();
-            } else {
-                $msg->file = $file;
-                $msg->message = sprintf(
-                    '    > %s (Exception: "%s")' . PHP_EOL,
-                    $e->getMessage(),
-                    get_class($e)
-                );
-            }
-            $this->errorQueue->add($this->errorQueue->count(), $msg);
-        }
+        $report = FileReport::create($file);
+        $this->reports[] = $report;
+        $status = $this->validator->validateFile($report);
 
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             if ($status === false) {
