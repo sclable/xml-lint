@@ -4,44 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d87e2fd8c4b1cbc05a49cf25ca7c8e61",
+    "hash": "bfa78271eb2f1bddd5386879ce68486f",
+    "content-hash": "93af0a06648d04e5d6e5def397b03cac",
     "packages": [
-        {
-            "name": "m-bymike/xml-handler",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/m-bymike/xml-handler.git",
-                "reference": "64afc5faf8c3d381c786b541b34a490860d31b7c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/m-bymike/xml-handler/zipball/64afc5faf8c3d381c786b541b34a490860d31b7c",
-                "reference": "64afc5faf8c3d381c786b541b34a490860d31b7c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "xmlHandler\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Rutz",
-                    "email": "m-bymike@users.noreply.github.com"
-                }
-            ],
-            "description": "a little helper to xml handling with DOMDocument. opening and especial a powerful validating tool, where errors are not simply written to the logs. you're able to get them and present it anywhere.",
-            "time": "2015-04-29 09:01:40"
-        },
         {
             "name": "symfony/console",
             "version": "v2.7.5",
