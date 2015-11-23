@@ -10,8 +10,7 @@
 namespace sclable\xmlLint\validator;
 
 use sclable\xmlLint\data\FileReport;
-use xmlHandler\exception\XMLHandlerException;
-use xmlHandler\XMLFileHandler;
+use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
  * Class LintValidation
@@ -23,41 +22,46 @@ use xmlHandler\XMLFileHandler;
  */
 class LintValidation implements ValidationInterface
 {
+    /** @var LibXmlErrorFormatter */
+    private $formatter;
+
+    /**
+     * LintValidation constructor.
+     * @param LibXmlErrorFormatter $formatter
+     */
+    public function __construct(LibXmlErrorFormatter $formatter)
+    {
+        $this->formatter = $formatter;
+        libxml_use_internal_errors(true);
+    }
+
     /**
      * @inheritdoc
      */
     public function validateFile(FileReport $report)
     {
-        $handler = XMLFileHandler::createXmlHandlerFromFile($report->getFile());
 
-        try {
-            $handler->getDOMDocument();
-            return true;
-        } catch (XMLHandlerException $e) {
-            if ($handler->hasErrors()) {
-                $problems = [];
-                foreach ($handler->getXmlErrors() as $xmlError) {
-                    $problems[] = sprintf(
-                        'Line %s: [%s] %s',
-                        $xmlError->line,
-                        $xmlError->code,
-                        trim($xmlError->message)
-                    );
-                };
+        $realPath = $report->getFile()->getRealPath();
 
-                foreach (array_unique($problems) as $problem) {
-                    $report->reportProblem($problem);
-                }
-
-            } else {
-                $report->reportProblem(sprintf(
-                    '%s (Exception: "%s")' . PHP_EOL,
-                    $e->getMessage(),
-                    get_class($e)
-                ));
-            }
+        if (is_file($realPath) === false) {
+            $report->reportProblem('file not found: ' . $realPath);
+            return false;
         }
 
-        return false;
+        if (is_readable($realPath) === false) {
+            $report->reportProblem('file not readable: ' . $realPath);
+            return false;
+        }
+
+        libxml_clear_errors();
+        $domDoc = new \DOMDocument();
+        $domDoc->load($realPath, LIBXML_NOERROR | LIBXML_NOWARNING | LIBXML_PEDANTIC);
+
+        $errors = libxml_get_errors();
+        foreach ($this->formatter->formatErrors($errors) as $problem) {
+            $report->reportProblem($problem);
+        }
+
+        return !$report->hasProblems();
     }
 }
