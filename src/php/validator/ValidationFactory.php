@@ -10,6 +10,8 @@
 
 namespace sclable\xmlLint\validator;
 
+use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
+
 /**
  * Class ValidationFactory
  *
@@ -26,7 +28,11 @@ class ValidationFactory
     public static function createDefaultCollection()
     {
         $collection = new ValidationCollection();
-        $collection->addValidation(new LintValidation());
+
+        $formatter = new LibXmlErrorFormatter();
+
+        $collection->addValidation(new LintValidation($formatter))
+            ->addValidation(new XsdValidation($formatter));
         return $collection;
     }
 }
