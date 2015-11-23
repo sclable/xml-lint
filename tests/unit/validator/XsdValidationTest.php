@@ -24,9 +24,6 @@ use sclable\xmlLint\validator\XsdValidation;
  */
 class XsdValidationTest extends \PHPUnit_Framework_TestCase
 {
-
-    // todo distinguish no namespace / namespace schema validation
-
     public function testValidateIntactFileWithXsd()
     {
         $file = new \SplFileInfo(
