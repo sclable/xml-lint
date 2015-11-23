@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deep-thought xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="schema.xsd">
+    <results>
+        <result>
+            <question>unknown</question>
+            <answer>42</answer>
+        </result>
+    </results>
+</deep-thought>

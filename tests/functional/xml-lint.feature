@@ -10,3 +10,8 @@ Feature: Check an xml file whether its structure seems to be ok or not.
     When I run lint
     Then I have a return code "1"
 
+  Scenario: Check a file with an xsd schema validation
+    Given the file "with_xsd_broken.xml"
+    When I run lint
+    Then I have a return code "1"
+
