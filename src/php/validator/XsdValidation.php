@@ -45,7 +45,12 @@ class XsdValidation implements ValidationInterface
      */
     public function validateFile(FileReport $report)
     {
-        $file = $report->getFile()->getPath() . '/' . $report->getFile()->getBasename();
+        $file = $report->getFile()->getRealPath();
+
+        if (empty($file)) {
+            return false;
+        }
+
         $domDoc = new \DOMDocument();
         $loaded = $domDoc->load($file, LIBXML_NOERROR | LIBXML_NOWARNING | LIBXML_PEDANTIC);
 
