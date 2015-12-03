@@ -1,6 +1,11 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.2.1
+-----
+
+* fix a bug where patterns were empty
+
 0.2.0
 -----
 
