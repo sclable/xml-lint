@@ -146,8 +146,9 @@ class LintCommand extends Command
         $finder->files()
             ->in($dir);
 
-        if ($this->input->hasOption(self::OPTION_PATTERN)) {
-            $patterns = explode(',', $this->input->getOption(self::OPTION_PATTERN));
+        $patterns = $this->input->getOption(self::OPTION_PATTERN);
+        if (!empty($patterns)) {
+            $patterns = explode(',', $patterns);
             foreach ($patterns as $pattern) {
                 $finder->name(trim($pattern));
             }
