@@ -36,6 +36,8 @@ class LintCommand extends Command
     const ARGUMENT_FILE = 'file';
     const OPTION_RECURSIVE = 'recursive';
     const OPTION_EXCLUDE   = 'exclude';
+    const OPTION_PATTERN   = 'pattern';
+    const OPTION_NO_XSD   = 'skip-xsd';
 
     /** @var OutputInterface */
     protected $output;
@@ -49,6 +51,9 @@ class LintCommand extends Command
     /** @var FileReport[] */
     private $reports = [];
 
+    /** @var float */
+    private $start;
+
     /**
      * @inheritdoc
      */
@@ -60,20 +65,33 @@ class LintCommand extends Command
             ->addArgument(
                 self::ARGUMENT_FILE,
                 InputArgument::REQUIRED,
-                'the path/to/file.xml to lint or a directory to lint all files'
+                'the path/to/file.xml to lint a single file or a path/to/directory to lint all xml ' .
+                'files in a directory.'
             )
             ->addOption(
                 self::OPTION_RECURSIVE,
                 'r',
                 InputOption::VALUE_OPTIONAL,
-                'whether to scan directories recursive.',
+                'Whether to scan directories recursive.',
                 true
             )
             ->addOption(
                 self::OPTION_EXCLUDE,
                 'e',
-                InputOption::VALUE_OPTIONAL,
-                'path(s) to exclude from linting, can be several separated by comma'
+                InputOption::VALUE_REQUIRED,
+                'Path(s) to exclude from linting, can be several separated by comma'
+            )
+            ->addOption(
+                self::OPTION_PATTERN,
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Filter files with one or more patterns, e.g.: *.svg,*.xml. Separate patterns by comma.'
+            )
+            ->addOption(
+                self::OPTION_NO_XSD,
+                's',
+                InputOption::VALUE_NONE,
+                'Skip downloading and checking against XSD-files.'
             )
         ;
     }
@@ -83,10 +101,15 @@ class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->start = microtime(true);
         $this->output = $output;
         $this->input = $input;
 
-        $this->validator = ValidationFactory::createDefaultCollection();
+        if ($input->getOption(self::OPTION_NO_XSD)) {
+            $this->validator = ValidationFactory::createLintOnlyValidation();
+        } else {
+            $this->validator = ValidationFactory::createDefaultCollection();
+        }
 
         $file = $input->getArgument(self::ARGUMENT_FILE);
 
@@ -101,12 +124,15 @@ class LintCommand extends Command
 
         if ($status === false) {
             $this->printReportsOfFilesWithProblems();
-            return 1;
         }
 
-        $this->output->writeln(PHP_EOL . '<info>done</info>');
+        $this->output->writeln(sprintf(
+            PHP_EOL . '%d files / %1.2f seconds <info>done</info>',
+            count($this->reports),
+            microtime(true) - $this->start
+        ));
 
-        return 0;
+        return $status ? 0 : 1;
     }
 
     /**
@@ -116,11 +142,19 @@ class LintCommand extends Command
      */
     private function lintDir($dir)
     {
-        $finder = new Finder();
+        $finder = Finder::create();
         $finder->files()
-            ->name('*.xml')
-            ->name('*.xml.dist')
             ->in($dir);
+
+        if ($this->input->hasOption(self::OPTION_PATTERN)) {
+            $patterns = explode(',', $this->input->getOption(self::OPTION_PATTERN));
+            foreach ($patterns as $pattern) {
+                $finder->name(trim($pattern));
+            }
+        } else {
+            $finder->name('*.xml.dist')
+                ->name('*.xml');
+        }
 
         if (!$this->input->getOption(self::OPTION_RECURSIVE)) {
             $finder->depth(0);
@@ -140,10 +174,10 @@ class LintCommand extends Command
             $ret = $this->lintFile($file) && $ret;
             if (++$counter % 30 == 0) {
                 $this->output->writeln(sprintf(
-                    '    (%s/%s %s%%)',
+                    ' %8d/%d %6.2f%%',
                     $counter,
                     $totalFiles,
-                    round($counter/$totalFiles*100, 0)
+                    $counter / $totalFiles * 100
                 ));
             }
         }

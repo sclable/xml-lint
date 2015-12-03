@@ -35,4 +35,13 @@ class ValidationFactory
             ->addValidation(new XsdValidation($formatter));
         return $collection;
     }
+
+    /**
+     * @return ValidationInterface
+     */
+    public static function createLintOnlyValidation()
+    {
+        $formatter = new LibXmlErrorFormatter();
+        return new LintValidation($formatter);
+    }
 }
