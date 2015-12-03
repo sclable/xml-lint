@@ -5,6 +5,8 @@ A php tool to lint and validate xml files from the commandline.
 
 [![Build Status](https://travis-ci.org/sclable/xml-lint.svg?branch=master)](https://travis-ci.org/sclable/xml-lint)
 
+XML Lint checks the syntax of any xml files and validates the file against the XSD schema defined in the file.
+
 Usage
 -----
 
@@ -12,7 +14,7 @@ Usage
 
 If you'd like to include this library in your project with [composer](https://getcomposer.org/), simply run:
 
-    composer require "sclable/xml-lint":dev-master
+    composer require "sclable/xml-lint"
 
 ### Command Line Usage
 
@@ -34,6 +36,8 @@ To lint a directory and all its subdirectories:
 
 * `-v` be verbose, display the filename of the current file to lint
 * `-r 0` don't search recursive (if the argument is a directory)
+* `-e name` exclude files or directories containing 'name'
+* `-s` skip the xsd validation
 
 
 Changelog

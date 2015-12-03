@@ -1,10 +1,18 @@
 Sclable XML Lint - Changelog
 ============================
 
-dev-master
-----------
+0.2.0
+-----
+
+* validate xml files against XSD schemata (with skip option)
+* pattern option
+
+
+0.1.0
+-----
 
 * cli interface
 * lint xml file
 * lint files in a directory
 * recursive option (default is 'yes')
+* exclude option
