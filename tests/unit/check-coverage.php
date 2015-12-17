@@ -4,6 +4,12 @@
  * @link http://ocramius.github.io/blog/automated-code-coverage-check-for-github-pull-requests-with-travis/
  */
 
+
+if (!function_exists('xdebug_get_code_coverage')) {
+    echo 'xdebug is not installed.' . PHP_EOL;
+    exit(0);
+}
+
 // coverage-checker.php
 $inputFile  = $argv[1];
 $percentage = min(100, max(0, (int) $argv[2]));
