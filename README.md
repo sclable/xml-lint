@@ -3,7 +3,7 @@ Sclable XML Lint
 
 A php tool to lint and validate xml files from the commandline.
 
-[![Build Status](https://travis-ci.org/sclable/xml-lint.svg?branch=master)](https://travis-ci.org/sclable/xml-lint)
+[![Build Status](https://travis-ci.org/sclable/xml-lint.svg?branch=master)](https://travis-ci.org/sclable/xml-lint) [![Latest Stable Version](https://poser.pugx.org/sclable/xml-lint/v/stable)](https://packagist.org/packages/sclable/xml-lint) [![Total Downloads](https://poser.pugx.org/sclable/xml-lint/downloads)](https://packagist.org/packages/sclable/xml-lint) [![Latest Unstable Version](https://poser.pugx.org/sclable/xml-lint/v/unstable)](https://packagist.org/packages/sclable/xml-lint) [![License](https://poser.pugx.org/sclable/xml-lint/license)](https://packagist.org/packages/sclable/xml-lint)
 
 XML Lint checks the syntax of any xml files and validates the file against the XSD schema defined in the file.
 
