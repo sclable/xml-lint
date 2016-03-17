@@ -10,11 +10,11 @@
     ],
     "bin": ["bin/xmllint"],
     "require": {
-        "symfony/console": "^3.0",
-        "symfony/finder": "^3.0"
+        "symfony/console": "~2.7|~3.0",
+        "symfony/finder": "~2.7|~3.0"
     },
     "require-dev": {
-        "behat/behat": "^3.0-dev",
+        "behat/behat": "^3.0",
         "sclable/coding-standards": "^0.1",
         "phpunit/phpunit": "^4.8",
         "phing/phing": "^2.12"
