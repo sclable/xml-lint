@@ -1,6 +1,6 @@
 {
     "name": "sclable/xml-lint",
-    "description": "A php tool to lint and validate xml files.",
+    "description": "A php cli tool to lint and validate xml files.",
     "license": "MIT",
     "authors": [
         {
@@ -10,12 +10,12 @@
     ],
     "bin": ["bin/xmllint"],
     "require": {
-        "symfony/console": "^2.7",
-        "symfony/finder": "^2.7"
+        "symfony/console": "^3.0",
+        "symfony/finder": "^3.0"
     },
     "require-dev": {
-        "behat/behat": "^3.0",
-        "sclable/coding-standards": "0.1.0.2",
+        "behat/behat": "^3.0-dev",
+        "sclable/coding-standards": "^0.1",
         "phpunit/phpunit": "^4.8",
         "phing/phing": "^2.12"
     },
