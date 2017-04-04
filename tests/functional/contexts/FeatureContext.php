@@ -38,7 +38,6 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $command = $this->application->find('lint');
 
         $this->commandTester = new CommandTester($command);
-
     }
 
     /**
