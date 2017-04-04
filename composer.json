@@ -21,7 +21,11 @@
     },
     "autoload": {
         "psr-4": {
-            "sclable\\xmlLint\\": "src/php/",
+            "sclable\\xmlLint\\": "src/php/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "sclable\\xmlLint\\tests\\": "tests/"
         }
     }
