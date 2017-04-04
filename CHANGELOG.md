@@ -1,6 +1,17 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.2.3
+-----
+
+* clean up composer file (move tests to autoload-dev)
+
+0.2.2
+-----
+
+* update dependencies to symfony/finder & symfony/console
+
+
 0.2.1
 -----
 

@@ -8,7 +8,7 @@
     <!-- Settings                                      -->
     <!-- ============================================  -->
 
-    <property name="version" value="0.1.0.0-dev" override="true" />
+    <property name="version" value="0.2.2" override="true" />
     <property name="pkg_key" value="sclable-xml-lint" override="false" />
 
     <property name="build-dir" value="build" />
