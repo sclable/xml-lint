@@ -13,12 +13,10 @@ namespace sclable\xmlLint\tests\unit\data;
 use sclable\xmlLint\data\ValidationProblem;
 
 /**
- * Class ValidationProblemTest
+ * Class ValidationProblemTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\data
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationProblemTest extends \PHPUnit_Framework_TestCase
 {

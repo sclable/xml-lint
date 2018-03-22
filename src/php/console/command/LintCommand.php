@@ -7,23 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\console\command;
 
 use sclable\xmlLint\data\FileReport;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use sclable\xmlLint\validator\ValidationFactory;
+use Symfony\Component\Console\Input\InputOption;
 use sclable\xmlLint\validator\ValidationInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class LintCommand
+ * Class LintCommand.
  *
  *
- * @package sclable\xmlLint\console\command
  * @author Michael Rutz <michael.rutz@sclable.com>
  *
  * @const string COMMAND_NAME the name of the command
@@ -35,9 +35,9 @@ class LintCommand extends Command
     const COMMAND_NAME = 'lint';
     const ARGUMENT_FILE = 'file';
     const OPTION_RECURSIVE = 'recursive';
-    const OPTION_EXCLUDE   = 'exclude';
-    const OPTION_PATTERN   = 'pattern';
-    const OPTION_NO_XSD   = 'skip-xsd';
+    const OPTION_EXCLUDE = 'exclude';
+    const OPTION_PATTERN = 'pattern';
+    const OPTION_NO_XSD = 'skip-xsd';
 
     /** @var OutputInterface */
     protected $output;
@@ -55,7 +55,7 @@ class LintCommand extends Command
     private $start;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -97,7 +97,7 @@ class LintCommand extends Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -122,7 +122,7 @@ class LintCommand extends Command
 
         $output->writeln('');
 
-        if ($status === false) {
+        if (false === $status) {
             $this->printReportsOfFilesWithProblems();
         }
 
@@ -136,8 +136,10 @@ class LintCommand extends Command
     }
 
     /**
-     * lint the content of a directory, recursive if defined
+     * lint the content of a directory, recursive if defined.
+     *
      * @param string $dir path/to/dir
+     *
      * @return bool
      */
     private function lintDir($dir)
@@ -173,7 +175,7 @@ class LintCommand extends Command
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $ret = $this->lintFile($file) && $ret;
-            if (++$counter % 30 == 0) {
+            if (0 == ++$counter % 30) {
                 $this->output->writeln(sprintf(
                     ' %8d/%d %6.2f%%',
                     $counter,
@@ -187,14 +189,14 @@ class LintCommand extends Command
     }
 
     /**
-     * format and print the errors from the queue to the output
+     * format and print the errors from the queue to the output.
      */
     private function printReportsOfFilesWithProblems()
     {
         $this->output->writeln(PHP_EOL . '<error>errors:</error>');
 
         foreach ($this->reports as $report) {
-            if ($report->hasProblems() === false) {
+            if (false === $report->hasProblems()) {
                 continue;
             }
 
@@ -212,13 +214,14 @@ class LintCommand extends Command
     }
 
     /**
-     * lint a file, pass errors to the queue
+     * lint a file, pass errors to the queue.
+     *
      * @param \SplFileInfo $file
+     *
      * @return bool
      */
     private function lintFile(\SplFileInfo $file)
     {
-
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->output->write('lint file ' . $file . ' ... ');
         }
@@ -228,13 +231,13 @@ class LintCommand extends Command
         $status = $this->validator->validateFile($report);
 
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            if ($status === false) {
+            if (false === $status) {
                 $this->output->writeln('<error>errors</error>');
             } else {
                 $this->output->writeln('<info>passed.</info>');
             }
         } else {
-            if ($status === false) {
+            if (false === $status) {
                 $this->output->write('<error>F</error>');
             } else {
                 $this->output->write('.');

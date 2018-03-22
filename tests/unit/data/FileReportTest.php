@@ -7,18 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\tests\unit\data;
 
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\data\ValidationProblem;
 
 /**
- * Class FileReportTest
+ * Class FileReportTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\data
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class FileReportTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +34,7 @@ class FileReportTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var ValidationProblem $problem */
+        /* @var ValidationProblem $problem */
         $report->addProblem($problem);
         $this->assertTrue($report->hasProblems());
     }

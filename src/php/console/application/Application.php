@@ -7,23 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\console\application;
 
-use sclable\xmlLint\console\command\LintCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Input\ArgvInput;
+use sclable\xmlLint\console\command\LintCommand;
+use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Application
+ * Class Application.
  *
  * customized console application for Xml Lint
  *
- * @package sclable\xmlLint\console
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class Application extends \Symfony\Component\Console\Application
 {
@@ -31,7 +30,7 @@ class Application extends \Symfony\Component\Console\Application
     const NAME = 'Sclable Xml Lint';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
@@ -41,26 +40,27 @@ class Application extends \Symfony\Component\Console\Application
         $this->setDefaultCommand(LintCommand::COMMAND_NAME);
     }
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getDefaultCommands()
     {
         parent::getDefaultCommands();
+
         return [
             new HelpCommand(),
-            new LintCommand()
+            new LintCommand(),
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
-        if ($input === null) {
+        if (null === $input) {
             // rewrite the input for single command usage
             $argv = $_SERVER['argv'];
             $scriptName = array_shift($argv);
@@ -73,11 +73,11 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($command->getName() <> 'version') {
+        if ('version' != $command->getName()) {
             $output->writeln($this->getLongVersion());
         }
 

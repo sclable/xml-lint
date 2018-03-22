@@ -7,17 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\console\command;
 
-use \Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 
 /**
- * Class Command
+ * Class Command.
  *
  *
- * @package php\console\command
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class Command extends BaseCommand
 {
@@ -25,7 +24,8 @@ class Command extends BaseCommand
     private $synopsis = [];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getSynopsis($short = false)

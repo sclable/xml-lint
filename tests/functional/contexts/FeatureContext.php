@@ -4,8 +4,8 @@ namespace sclable\xmlLint\tests\functional\contexts;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use sclable\xmlLint\console\application\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use sclable\xmlLint\console\application\Application;
 
 /**
  * Defines application features from the specific context.
@@ -42,6 +42,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     /**
      * @Given the file :file
+     *
      * @param $file
      */
     public function theFile($file)
@@ -55,20 +56,22 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iRunLint()
     {
         $this->exitCode = $this->commandTester->execute([
-            'file' => $this->file
+            'file' => $this->file,
         ]);
     }
 
     /**
      * @Then I have a return code :code
+     *
      * @param $code
+     *
      * @throws \Exception
      */
     public function iHaveAReturnCode($code)
     {
         $code = (int) $code;
 
-        if ($this->exitCode === null) {
+        if (null === $this->exitCode) {
             echo $this->commandTester->getDisplay();
             throw new \Exception('the return code was NULL.');
         }

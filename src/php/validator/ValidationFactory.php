@@ -13,12 +13,10 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class ValidationFactory
+ * Class ValidationFactory.
  *
  *
- * @package sclable\xmlLint\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationFactory
 {
@@ -33,6 +31,7 @@ class ValidationFactory
 
         $collection->addValidation(new LintValidation($formatter))
             ->addValidation(new XsdValidation($formatter));
+
         return $collection;
     }
 
@@ -42,6 +41,7 @@ class ValidationFactory
     public static function createLintOnlyValidation()
     {
         $formatter = new LibXmlErrorFormatter();
+
         return new LintValidation($formatter);
     }
 }

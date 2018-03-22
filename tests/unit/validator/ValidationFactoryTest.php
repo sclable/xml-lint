@@ -14,16 +14,13 @@ use sclable\xmlLint\validator\ValidationFactory;
 use sclable\xmlLint\validator\ValidationInterface;
 
 /**
- * Class ValidationFactoryTest
+ * Class ValidationFactoryTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testDefaultCollection()
     {
         $collection = ValidationFactory::createDefaultCollection();

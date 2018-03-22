@@ -11,12 +11,10 @@
 namespace sclable\xmlLint\data;
 
 /**
- * Class ValidationProblem
+ * Class ValidationProblem.
  *
  *
- * @package php\data
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationProblem
 {
@@ -24,8 +22,10 @@ class ValidationProblem
     private $msg = '';
 
     /**
-     * factory method to create a validation problem
+     * factory method to create a validation problem.
+     *
      * @param string $message
+     *
      * @return ValidationProblem
      */
     public static function create($message)
@@ -35,13 +35,13 @@ class ValidationProblem
 
     /**
      * ValidationProblem constructor.
+     *
      * @param string $message
      */
     public function __construct($message)
     {
         $this->msg = $message;
     }
-
 
     /**
      * @return string

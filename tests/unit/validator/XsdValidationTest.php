@@ -8,17 +8,17 @@
  * @copyright (c) 2015 Sclable Business Solutions GmbH
  * ----------------------------------------------------------------------------
  */
+
 namespace sclable\xmlLint\tests\unit\validator;
 
 use sclable\xmlLint\data\FileReport;
-use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 use sclable\xmlLint\validator\XsdValidation;
+use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class XsdValidationTest
+ * Class XsdValidationTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\validator\xsdValidation
  * @author Michael Rutz <michael.rutz@sclable.com>
  * @coversDefaultClass \sclable\xmlLint\validator\XsdValidation
  */
@@ -59,7 +59,7 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             ->method('reportProblem');
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /** @var FileReport $mock */
+        /* @var FileReport $mock */
         $this->assertFalse($validator->validateFile($mock));
     }
 
@@ -93,7 +93,7 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             );
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /** @var FileReport $mock */
+        /* @var FileReport $mock */
         $this->assertFalse($validator->validateFile($mock));
     }
 
@@ -143,7 +143,7 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             ->with($this->stringContains('xsd validation file is empty'));
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /** @var FileReport $mock */
+        /* @var FileReport $mock */
         $this->assertFalse($validator->validateFile($mock));
     }
 
@@ -163,7 +163,7 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             ->with($this->stringContains('unable to load schema file from'));
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /** @var FileReport $mock */
+        /* @var FileReport $mock */
         $this->assertFalse($validator->validateFile($mock));
     }
 }

@@ -7,18 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\validator;
 
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class LintValidation
+ * Class LintValidation.
  *
  *
- * @package php\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class LintValidation implements ValidationInterface
 {
@@ -27,6 +26,7 @@ class LintValidation implements ValidationInterface
 
     /**
      * LintValidation constructor.
+     *
      * @param LibXmlErrorFormatter $formatter
      */
     public function __construct(LibXmlErrorFormatter $formatter)
@@ -36,20 +36,21 @@ class LintValidation implements ValidationInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validateFile(FileReport $report)
     {
-
         $realPath = $report->getFile()->getRealPath();
 
-        if (is_file($realPath) === false) {
+        if (false === is_file($realPath)) {
             $report->reportProblem('file not found: ' . $realPath);
+
             return false;
         }
 
-        if (is_readable($realPath) === false) {
+        if (false === is_readable($realPath)) {
             $report->reportProblem('file not readable: ' . $realPath);
+
             return false;
         }
 

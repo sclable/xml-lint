@@ -13,12 +13,10 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\data\FileReport;
 
 /**
- * Class ValidationCollection
+ * Class ValidationCollection.
  *
  *
- * @package php\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationCollection implements ValidationInterface
 {
@@ -26,7 +24,7 @@ class ValidationCollection implements ValidationInterface
     private $collection = [];
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function validateFile(FileReport $report)
     {
@@ -41,6 +39,7 @@ class ValidationCollection implements ValidationInterface
     public function addValidation(ValidationInterface $validation)
     {
         $this->collection[] = $validation;
+
         return $this;
     }
 }

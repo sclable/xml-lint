@@ -11,12 +11,10 @@
 namespace sclable\xmlLint\data;
 
 /**
- * Class FileReport
+ * Class FileReport.
  *
  *
- * @package php\data
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class FileReport
 {
@@ -28,6 +26,7 @@ class FileReport
 
     /**
      * FileReport constructor.
+     *
      * @param \SplFileInfo $file
      */
     public function __construct(\SplFileInfo $file)
@@ -37,11 +36,12 @@ class FileReport
 
     /**
      * @param string|\SplFileInfo $file
+     *
      * @return static
      */
     public static function create($file)
     {
-        if (($file instanceof \SplFileInfo) === false) {
+        if (false === ($file instanceof \SplFileInfo)) {
             $file = new \SplFileInfo($file);
         }
 
@@ -50,6 +50,7 @@ class FileReport
 
     /**
      * @param string $msg
+     *
      * @return $this
      */
     public function reportProblem($msg)
@@ -60,8 +61,10 @@ class FileReport
     }
 
     /**
-     * report a problem to a file
+     * report a problem to a file.
+     *
      * @param ValidationProblem $problem
+     *
      * @return $this
      */
     public function addProblem(ValidationProblem $problem)
@@ -72,7 +75,8 @@ class FileReport
     }
 
     /**
-     * indicate whether a file has any reported problems or not
+     * indicate whether a file has any reported problems or not.
+     *
      * @return bool
      */
     public function hasProblems()

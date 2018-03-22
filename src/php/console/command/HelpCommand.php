@@ -7,14 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace sclable\xmlLint\console\command;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class HelpCommand
+ * Class HelpCommand.
  *
  * customized help command to render the help without sub_command.
  *
@@ -22,9 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * customized: `xmllint [--option|-o] <argument>`
  *
  * @see \Symfony\Component\Console\Command\HelpCommand
- * @package sclable\xmlLint\console\command
- * @author Michael Rutz <michael.rutz@sclable.com>
  *
+ * @author Michael Rutz <michael.rutz@sclable.com>
  */
 class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 {
@@ -37,7 +37,7 @@ class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 
         $this
             ->setName('help')
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputOption('xml', null, InputOption::VALUE_NONE, 'To output help as XML'),
                 new InputOption(
                     'format',
@@ -47,7 +47,7 @@ class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
                     'txt'
                 ),
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command help'),
-            ))
+            ])
             ->setDescription('Display help')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command displays the help.
@@ -59,7 +59,7 @@ EOF
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

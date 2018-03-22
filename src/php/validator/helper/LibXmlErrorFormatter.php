@@ -8,15 +8,14 @@
  * @copyright (c) 2015 Sclable Business Solutions GmbH
  * ----------------------------------------------------------------------------
  */
+
 namespace sclable\xmlLint\validator\helper;
 
 /**
- * Class LibXmlErrorFormatter
+ * Class LibXmlErrorFormatter.
  *
  *
- * @package php\validator\helper
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class LibXmlErrorFormatter
 {
@@ -27,7 +26,7 @@ class LibXmlErrorFormatter
         $messages = [];
         foreach ($xmlErrors as $xmlError) {
             $messages[] = $this->format($xmlError);
-        };
+        }
 
         return array_unique($messages);
     }
@@ -45,6 +44,7 @@ class LibXmlErrorFormatter
     public function setFormat($format)
     {
         $this->format = $format;
+
         return $this;
     }
 }

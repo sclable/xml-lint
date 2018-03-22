@@ -8,27 +8,25 @@
  * @copyright (c) 2015 Sclable Business Solutions GmbH
  * ----------------------------------------------------------------------------
  */
+
 namespace sclable\xmlLint\tests\unit\validator\helper;
 
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class LibXmlErrorFormatterTest
+ * Class LibXmlErrorFormatterTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\validator\helper
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class LibXmlErrorFormatterTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testFormatError()
     {
         $errors = [$this->createLibXmlError('test', 1, 2)];
         $this->assertEquals(
             [
-                'Line 2: [1] test'
+                'Line 2: [1] test',
             ],
             (new LibXmlErrorFormatter())->formatErrors($errors)
         );
@@ -41,7 +39,7 @@ class LibXmlErrorFormatterTest extends \PHPUnit_Framework_TestCase
         $formatter->setFormat('%s / %s / %s');
         $this->assertEquals(
             [
-                '2 / 1 / test'
+                '2 / 1 / test',
             ],
             $formatter->formatErrors($errors)
         );
@@ -51,7 +49,7 @@ class LibXmlErrorFormatterTest extends \PHPUnit_Framework_TestCase
     {
         $errors = [
             $this->createLibXmlError('test', 1, 2),
-            $this->createLibXmlError('test', 1, 2)
+            $this->createLibXmlError('test', 1, 2),
         ];
 
         $this->assertCount(1, (new LibXmlErrorFormatter())->formatErrors($errors));
@@ -59,8 +57,9 @@ class LibXmlErrorFormatterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $msg
-     * @param int $code
-     * @param int $line
+     * @param int    $code
+     * @param int    $line
+     *
      * @return \LibXMLError
      */
     private function createLibXmlError($msg, $code, $line)

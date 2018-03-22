@@ -11,22 +11,20 @@
 namespace sclable\xmlLint\tests\unit\validator;
 
 use sclable\xmlLint\data\FileReport;
-use sclable\xmlLint\validator\ValidationCollection;
 use sclable\xmlLint\validator\ValidationInterface;
+use sclable\xmlLint\validator\ValidationCollection;
 
 /**
- * Class ValidationCollectionTest
+ * Class ValidationCollectionTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class ValidationCollectionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider getMockReturnValues
+     *
      * @param bool $return1
      * @param bool $return2
      * @param bool $expected
@@ -44,8 +42,8 @@ class ValidationCollectionTest extends \PHPUnit_Framework_TestCase
             ->willReturn($return2);
 
         $collection = new ValidationCollection();
-        /** @var ValidationInterface $mock1 */
-        /** @var ValidationInterface $mock2 */
+        /* @var ValidationInterface $mock1 */
+        /* @var ValidationInterface $mock2 */
         $collection->addValidation($mock1)
             ->addValidation($mock2);
 

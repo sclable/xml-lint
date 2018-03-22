@@ -8,18 +8,17 @@
  * @copyright (c) 2015 Sclable Business Solutions GmbH
  * ----------------------------------------------------------------------------
  */
+
 namespace sclable\xmlLint\validator;
 
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class XsdValidation
+ * Class XsdValidation.
  *
  *
- * @package sclable\xmlLint\validator\xsdValidation
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class XsdValidation implements ValidationInterface
 {
@@ -31,6 +30,7 @@ class XsdValidation implements ValidationInterface
 
     /**
      * XsdValidation constructor.
+     *
      * @param LibXmlErrorFormatter $formatter
      */
     public function __construct(LibXmlErrorFormatter $formatter)
@@ -39,9 +39,8 @@ class XsdValidation implements ValidationInterface
         libxml_use_internal_errors(true);
     }
 
-
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function validateFile(FileReport $report)
     {
@@ -54,28 +53,29 @@ class XsdValidation implements ValidationInterface
         $domDoc = new \DOMDocument();
         $loaded = $domDoc->load($file, LIBXML_NOERROR | LIBXML_NOWARNING | LIBXML_PEDANTIC);
 
-        if ($loaded === false) {
+        if (false === $loaded) {
             return false;
         }
 
         $validation = $this->getSchemaValidationFile($domDoc);
 
-        if ($validation === false) {
+        if (false === $validation) {
             return true;
         }
 
         $validationSource = $this->getSchemaValidationSource($validation, $report);
 
-        if ($validationSource === false) {
+        if (false === $validationSource) {
             return false;
         }
 
         libxml_clear_errors();
-        if ($domDoc->schemaValidateSource($validationSource) !== true) {
+        if (true !== $domDoc->schemaValidateSource($validationSource)) {
             $errors = libxml_get_errors();
             foreach ($this->formatter->formatErrors($errors) as $problem) {
                 $report->reportProblem($problem);
             }
+
             return false;
         }
 
@@ -83,18 +83,20 @@ class XsdValidation implements ValidationInterface
     }
 
     /**
-     * @param string $filename
+     * @param string     $filename
      * @param FileReport $report
+     *
      * @return bool|string
      */
     private function getSchemaValidationSource($filename, $report)
     {
-        if ((preg_match('/^(http|https|ftp):/i', $filename) === 0)) {
-            if (file_exists($filename) === false) {
+        if ((0 === preg_match('/^(http|https|ftp):/i', $filename))) {
+            if (false === file_exists($filename)) {
                 $filename = $report->getFile()->getPath() . '/' . $filename;
             }
             if (!is_readable($filename)) {
                 $report->reportProblem('unable to validate, schema file is not readable: ' . $filename);
+
                 return false;
             }
         }
@@ -105,13 +107,15 @@ class XsdValidation implements ValidationInterface
 
         $validationSource = @file_get_contents($filename);
 
-        if ($validationSource === false) {
+        if (false === $validationSource) {
             $report->reportProblem('unable to load schema file from: ' . $filename);
+
             return false;
         }
 
         if (empty($validationSource)) {
             $report->reportProblem(sprintf('xsd validation file is empty ("%s").', $filename));
+
             return false;
         }
 
@@ -120,13 +124,14 @@ class XsdValidation implements ValidationInterface
 
     /**
      * @param \DOMDocument $document
+     *
      * @return bool|string
      */
     private function getSchemaValidationFile(\DOMDocument $document)
     {
         $firstChild = $this->getFirstChild($document);
         // @codeCoverageIgnoreStart
-        if ($firstChild === false) {
+        if (false === $firstChild) {
             return false;
         }
         // @codeCoverageIgnoreEnd
@@ -142,6 +147,7 @@ class XsdValidation implements ValidationInterface
 
     /**
      * @param \DOMDocument $document
+     *
      * @return bool|\DOMElement
      */
     private function getFirstChild(\DOMDocument $document)

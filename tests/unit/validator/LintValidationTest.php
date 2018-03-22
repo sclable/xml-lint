@@ -11,20 +11,17 @@
 namespace sclable\xmlLint\tests\unit\validator;
 
 use sclable\xmlLint\data\FileReport;
-use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 use sclable\xmlLint\validator\LintValidation;
+use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class LintValidationTest
+ * Class LintValidationTest.
  *
  *
- * @package sclable\xmlLint\tests\unit\validator
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 class LintValidationTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testNoValidationProblemsForIntactFile()
     {
         $validator = new LintValidation(new LibXmlErrorFormatter());
@@ -84,7 +81,7 @@ class LintValidationTest extends \PHPUnit_Framework_TestCase
             $mock = $this->getMock(FileReport::class, ['reportProblem'], [$file]);
             $mock->expects($this->once())
                 ->method('reportProblem')
-                ->with('file not readable: '.$file->getRealPath());
+                ->with('file not readable: ' . $file->getRealPath());
 
             /** @var FileReport $mock */
             $return = $validator->validateFile($mock);

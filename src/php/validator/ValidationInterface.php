@@ -13,16 +13,15 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\data\FileReport;
 
 /**
- * Interface ValidationInterface
- * @package sclable\xmlLint\validator
+ * Interface ValidationInterface.
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
- *
  */
 interface ValidationInterface
 {
     /**
      * @param FileReport $report
+     *
      * @return bool
      */
     public function validateFile(FileReport $report);
