@@ -1,6 +1,12 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.2.4
+-----
+
+* update dependencies to symfony/finder & symfony/console (include 4.*)
+
+
 0.2.3
 -----
 
