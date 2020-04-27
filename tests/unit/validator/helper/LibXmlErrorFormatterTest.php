@@ -11,6 +11,7 @@
 
 namespace sclable\xmlLint\tests\unit\validator\helper;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
@@ -19,7 +20,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class LibXmlErrorFormatterTest extends \PHPUnit_Framework_TestCase
+class LibXmlErrorFormatterTest extends TestCase
 {
     public function testFormatError()
     {

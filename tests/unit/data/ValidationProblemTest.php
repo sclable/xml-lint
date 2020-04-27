@@ -10,6 +10,7 @@
 
 namespace sclable\xmlLint\tests\unit\data;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\ValidationProblem;
 
 /**
@@ -18,7 +19,7 @@ use sclable\xmlLint\data\ValidationProblem;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class ValidationProblemTest extends \PHPUnit_Framework_TestCase
+class ValidationProblemTest extends TestCase
 {
     public function testCreateProblem()
     {

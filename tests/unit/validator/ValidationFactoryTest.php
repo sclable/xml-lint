@@ -10,6 +10,7 @@
 
 namespace sclable\xmlLint\tests\unit\validator;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\validator\ValidationFactory;
 use sclable\xmlLint\validator\ValidationInterface;
 
@@ -19,7 +20,7 @@ use sclable\xmlLint\validator\ValidationInterface;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class ValidationFactoryTest extends \PHPUnit_Framework_TestCase
+class ValidationFactoryTest extends TestCase
 {
     public function testDefaultCollection()
     {

@@ -10,6 +10,7 @@
 
 namespace sclable\xmlLint\tests\unit\data;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\data\ValidationProblem;
 
@@ -19,7 +20,7 @@ use sclable\xmlLint\data\ValidationProblem;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class FileReportTest extends \PHPUnit_Framework_TestCase
+class FileReportTest extends TestCase
 {
     public function testHasProblemsReturnsFalseOnNoProblems()
     {
@@ -42,7 +43,7 @@ class FileReportTest extends \PHPUnit_Framework_TestCase
     public function testCreateFromString()
     {
         $report = FileReport::create('no_file.xml');
-        $this->assertAttributeInstanceOf(\SplFileInfo::class, 'file', $report);
+        $this->assertInstanceOf(FileReport::class, $report);
     }
 
     public function testReportProblemCreatesValidationProblem()

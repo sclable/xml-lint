@@ -10,6 +10,7 @@
 
 namespace sclable\xmlLint\tests\unit\validator;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\LintValidation;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
@@ -20,7 +21,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class LintValidationTest extends \PHPUnit_Framework_TestCase
+class LintValidationTest extends TestCase
 {
     public function testNoValidationProblemsForIntactFile()
     {
@@ -29,7 +30,10 @@ class LintValidationTest extends \PHPUnit_Framework_TestCase
         $filename = dirname(dirname(__DIR__)) . '/functional/_testdata/fourtytwo.xml';
         $file = new \SplFileInfo($filename);
 
-        $mock = $this->getMock(FileReport::class, null, [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->expects($this->exactly(0))
             ->method('reportProblem');
 
@@ -45,7 +49,10 @@ class LintValidationTest extends \PHPUnit_Framework_TestCase
         $filename = dirname(dirname(__DIR__)) . '/functional/_testdata/broken.xml';
         $file = new \SplFileInfo($filename);
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem', 'hasProblems'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem', 'hasProblems'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->method('hasProblems')->willReturn(true);
         $mock->expects($this->exactly(3))
             ->method('reportProblem');
@@ -61,7 +68,10 @@ class LintValidationTest extends \PHPUnit_Framework_TestCase
 
         $file = new \SplFileInfo('does_not_exist.xml');
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->expects($this->exactly(1))
             ->method('reportProblem');
 
@@ -78,7 +88,10 @@ class LintValidationTest extends \PHPUnit_Framework_TestCase
         $fileMod = $file->getPerms();
         try {
             chmod($filename, 0333);
-            $mock = $this->getMock(FileReport::class, ['reportProblem'], [$file]);
+            $mock = $this->getMockBuilder(FileReport::class)
+                ->onlyMethods(['reportProblem'])
+                ->setConstructorArgs([$file])
+                ->getMock();
             $mock->expects($this->once())
                 ->method('reportProblem')
                 ->with('file not readable: ' . $file->getRealPath());

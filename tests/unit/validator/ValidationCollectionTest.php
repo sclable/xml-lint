@@ -10,6 +10,7 @@
 
 namespace sclable\xmlLint\tests\unit\validator;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\ValidationInterface;
 use sclable\xmlLint\validator\ValidationCollection;
@@ -20,7 +21,7 @@ use sclable\xmlLint\validator\ValidationCollection;
  *
  * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class ValidationCollectionTest extends \PHPUnit_Framework_TestCase
+class ValidationCollectionTest extends TestCase
 {
     /**
      * @dataProvider getMockReturnValues
