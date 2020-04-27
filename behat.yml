@@ -2,5 +2,5 @@
 default:
   suites:
       default:
-        paths: [ %paths.base%/tests/functional ]
+        paths: [ "%paths.base%/tests/functional" ]
         contexts: [ sclable\xmlLint\tests\functional\contexts\FeatureContext ]

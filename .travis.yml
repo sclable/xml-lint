@@ -1,18 +1,16 @@
 language: php
 php:
-  - '5.5.9'
-  - '5.6'
-  - '7.0'
-  - '7.1'
   - '7.2'
+  - '7.3'
+  - '7.4'
 
 install:
   - export COMPOSER_HOME=$(pwd)/.composer_home
   - export COMPOSER_CACHE=$(pwd)/.composer_cache
   - mkdir -p COMPOSER_HOME COMPOSER_CACHE
   - rm composer.lock
-  - composer global require --no-progress --no-suggest --no-interaction --prefer-dist "phpunit/phpunit:^4.8" "behat/behat:3.*" friendsofphp/php-cs-fixer
-  - composer install --no-dev --no-progress --no-suggest --no-interaction --prefer-dist
+  - composer global require --no-progress --no-suggest --no-interaction --prefer-dist "phpunit/phpunit:8.*|^9.1" "behat/behat:3.*" friendsofphp/php-cs-fixer
+  - composer install --no-dev --no-progress --no-suggest --no-interaction --prefer-dist --ignore-platform-reqs
   - composer dump -o -a --no-interaction
 
 script:

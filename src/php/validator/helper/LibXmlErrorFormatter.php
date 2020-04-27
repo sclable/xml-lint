@@ -1,21 +1,18 @@
 <?php
+
 /**
- * ----------------------------------------------------------------------------
- * This code is part of the Sclable Business Application Development Platform
- * and is subject to the provisions of your License Agreement with
- * Sclable Business Solutions GmbH.
+ * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2015 Sclable Business Solutions GmbH
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2020 Sclable Business Solutions GmbH
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace sclable\xmlLint\validator\helper;
 
 /**
  * Class LibXmlErrorFormatter.
- *
- *
- * @author Michael Rutz <michael.rutz@sclable.com>
  */
 class LibXmlErrorFormatter
 {

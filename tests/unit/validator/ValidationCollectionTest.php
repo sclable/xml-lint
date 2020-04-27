@@ -1,8 +1,9 @@
 <?php
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2015 Sclable Business Solutions GmbH
+ * @copyright (c) 2020 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +11,15 @@
 
 namespace sclable\xmlLint\tests\unit\validator;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\ValidationInterface;
 use sclable\xmlLint\validator\ValidationCollection;
 
 /**
  * Class ValidationCollectionTest.
- *
- *
- * @author Michael Rutz <michael.rutz@sclable.com>
  */
-class ValidationCollectionTest extends \PHPUnit_Framework_TestCase
+class ValidationCollectionTest extends TestCase
 {
     /**
      * @dataProvider getMockReturnValues

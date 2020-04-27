@@ -1,16 +1,17 @@
 <?php
+
 /**
- * ----------------------------------------------------------------------------
- * This code is part of the Sclable Business Application Development Platform
- * and is subject to the provisions of your License Agreement with
- * Sclable Business Solutions GmbH.
+ * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2015 Sclable Business Solutions GmbH
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2020 Sclable Business Solutions GmbH
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace sclable\xmlLint\tests\unit\validator;
 
+use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\XsdValidation;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
@@ -18,11 +19,9 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 /**
  * Class XsdValidationTest.
  *
- *
- * @author Michael Rutz <michael.rutz@sclable.com>
  * @coversDefaultClass \sclable\xmlLint\validator\XsdValidation
  */
-class XsdValidationTest extends \PHPUnit_Framework_TestCase
+class XsdValidationTest extends TestCase
 {
     public function testValidateIntactFileWithXsd()
     {
@@ -54,7 +53,10 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
     {
         $file = new \SplFileInfo('not_exists.xml');
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->expects($this->exactly(0))
             ->method('reportProblem');
 
@@ -83,7 +85,10 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             dirname(__DIR__) . '/_testdata/with_not_existing_xsd.xml'
         );
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem', 'hasProblems'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem', 'hasProblems'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->method('hasProblems')->willReturn(true);
         $mock->expects($this->once())
             ->method('reportProblem')
@@ -110,7 +115,6 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator->validateFile($report));
         $this->assertFalse($report->hasProblems());
         $this->assertTrue($validator->validateFile($report));
-        $this->assertAttributeNotEmpty('cache', $validator);
     }
 
     /**
@@ -136,7 +140,10 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             dirname(__DIR__) . '/_testdata/with_empty_xsd.xml'
         );
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem', 'hasProblems'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem', 'hasProblems'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->method('hasProblems')->willReturn(true);
         $mock->expects($this->once())
             ->method('reportProblem')
@@ -156,7 +163,10 @@ class XsdValidationTest extends \PHPUnit_Framework_TestCase
             dirname(__DIR__) . '/_testdata/with_bad_url_xsd.xml'
         );
 
-        $mock = $this->getMock(FileReport::class, ['reportProblem', 'hasProblems'], [$file]);
+        $mock = $this->getMockBuilder(FileReport::class)
+            ->onlyMethods(['reportProblem', 'hasProblems'])
+            ->setConstructorArgs([$file])
+            ->getMock();
         $mock->method('hasProblems')->willReturn(true);
         $mock->expects($this->once())
             ->method('reportProblem')
