@@ -1,8 +1,9 @@
 <?php
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2015 Sclable Business Solutions GmbH
+ * @copyright (c) 2020 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,9 +13,6 @@ namespace sclable\xmlLint\data;
 
 /**
  * Class FileReport.
- *
- *
- * @author Michael Rutz <michael.rutz@sclable.com>
  */
 class FileReport
 {
@@ -26,8 +24,6 @@ class FileReport
 
     /**
      * FileReport constructor.
-     *
-     * @param \SplFileInfo $file
      */
     public function __construct(\SplFileInfo $file)
     {
@@ -35,7 +31,7 @@ class FileReport
     }
 
     /**
-     * @param string|\SplFileInfo $file
+     * @param \SplFileInfo|string $file
      *
      * @return static
      */
@@ -62,8 +58,6 @@ class FileReport
 
     /**
      * report a problem to a file.
-     *
-     * @param ValidationProblem $problem
      *
      * @return $this
      */

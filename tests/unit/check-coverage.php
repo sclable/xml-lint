@@ -1,9 +1,14 @@
 <?php
+
 /**
- * copied from.
+ * This file is part of the Sclable Xml Lint Package.
  *
- * @see http://ocramius.github.io/blog/automated-code-coverage-check-for-github-pull-requests-with-travis/
+ * @copyright (c) 2020 Sclable Business Solutions GmbH
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 if (!function_exists('xdebug_get_code_coverage')) {
     echo 'xdebug is not installed.' . PHP_EOL;
     exit(0);
