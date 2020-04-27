@@ -1,6 +1,14 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.3.0
+-----
+
+* Add support for symfony console / finder 5.*
+* Drop compatibility for PHP <7.2 and eol symfony versions
+* Update test frameworks to latest versions
+
+
 0.2.4
 -----
 
