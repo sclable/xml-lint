@@ -9,8 +9,8 @@ install:
   - export COMPOSER_CACHE=$(pwd)/.composer_cache
   - mkdir -p COMPOSER_HOME COMPOSER_CACHE
   - rm composer.lock
-  - composer global require --no-progress --no-suggest --no-interaction --prefer-dist "phpunit/phpunit:^9.1" "behat/behat:3.*" friendsofphp/php-cs-fixer
-  - composer install --no-dev --no-progress --no-suggest --no-interaction --prefer-dist
+  - composer global require --no-progress --no-suggest --no-interaction --prefer-dist "phpunit/phpunit:8.*|^9.1" "behat/behat:3.*" friendsofphp/php-cs-fixer
+  - composer install --no-dev --no-progress --no-suggest --no-interaction --prefer-dist --ignore-platform-reqs
   - composer dump -o -a --no-interaction
 
 script:
