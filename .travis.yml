@@ -1,25 +1,27 @@
 language: php
-php:
-  - '7.2'
-  - '7.3'
-  - '7.4'
 
-install:
-  - export COMPOSER_HOME=$(pwd)/.composer_home
-  - export COMPOSER_CACHE=$(pwd)/.composer_cache
-  - mkdir -p COMPOSER_HOME COMPOSER_CACHE
-  - rm composer.lock
-  - composer global require --no-progress --no-suggest --no-interaction --prefer-dist "phpunit/phpunit:8.*|^9.1" "behat/behat:3.*" friendsofphp/php-cs-fixer
-  - composer install --no-dev --no-progress --no-suggest --no-interaction --prefer-dist --ignore-platform-reqs
-  - composer dump -o -a --no-interaction
-
-script:
-  - ${COMPOSER_HOME}/vendor/bin/phpunit
-  - ${COMPOSER_HOME}/vendor/bin/behat
-  - ${COMPOSER_HOME}/vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -v
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.3
+    - php: 7.4
+      env:
+        - CODE_STYLE=true
+    - php: 8.0
 
 cache:
   directories:
-  - vendor
-  - .composer_home
-  - .composer_cache
+    - $HOME/.composer/cache
+    - $HOME/.php-cs-fixer
+    - $HOME/.local
+
+before_script:
+  - phpenv config-rm xdebug.ini
+  - composer self-update
+  - composer update --no-progress --no-suggest --no-interaction --prefer-dist
+  - if [[ $CODE_STYLE == 'true' ]]; then composer install --working-dir=tools/php-cs-fixer; fi
+
+script:
+  - php vendor/bin/phpunit
+  - php vendor/bin/behat
+  - if [[ $CODE_STYLE == 'true' ]]; then php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v; fi
