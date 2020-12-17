@@ -1,6 +1,13 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.4.0
+-----
+
+* Add support for PHP 8
+* Drop support for PHP 7.2
+* Chores: Travis integration update
+
 0.3.0
 -----
 
