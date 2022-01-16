@@ -9,9 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: php-actions/composer@v5
+      - name: Install dependencies
+        uses: php-actions/composer@v6
         with:
           php_version: 8.0
+          version: 2
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
@@ -19,6 +21,7 @@ jobs:
 #          TEST_NAME: Scarlett
         with:
           php_version: 8.0
+          version: 9
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml.dist
           args: --coverage-text
