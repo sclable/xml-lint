@@ -13,8 +13,8 @@ jobs:
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
-        env:
-          TEST_NAME: Scarlett
+#        env:
+#          TEST_NAME: Scarlett
         with:
           php_version: 8.0
           bootstrap: vendor/autoload.php
