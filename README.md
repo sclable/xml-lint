@@ -40,6 +40,36 @@ To lint a directory and all its subdirectories:
 * `-s` skip the xsd validation
 
 
+Development
+-----------
+
+### Run tests
+
+```shell
+# check code style
+php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+
+# run tests
+php vendor/bin/phpunit
+php vendor/bin/behat
+```
+
+Using docker:
+
+```shell
+# Install dependencies
+docker run -it --rm -v  "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint -v ${COMPOSER_HOME:-$HOME/.composer}:/tmp --user $(id -u):$(id -g) composer install --ignore-platform-reqs --no-scripts
+docker run -it --rm -v  "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint/tools/php-cs-fixer -v ${COMPOSER_HOME:-$HOME/.composer}:/tmp --user $(id -u):$(id -g) composer install --ignore-platform-reqs --no-scripts
+
+# Run code style check
+docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint php:7.4-cli php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+
+# Run tests
+docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint --user $(id -u):$(id -g) php:7.4-cli php vendor/bin/phpunit
+docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint --user $(id -u):$(id -g) php:7.4-cli php vendor/bin/behat
+```
+
+
 Changelog
 ---------
 
