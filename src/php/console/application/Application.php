@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2020 Sclable Business Solutions GmbH
+ * @copyright (c) 2022 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -42,7 +42,7 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         parent::getDefaultCommands();
 
@@ -57,7 +57,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function run(InputInterface $input = null, OutputInterface $output = null): int
     {
         if (null === $input) {
             // rewrite the input for single command usage

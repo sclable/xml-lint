@@ -57,16 +57,20 @@ php vendor/bin/behat
 Using docker:
 
 ```shell
-# Install dependencies
-docker run -it --rm -v  "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint -v ${COMPOSER_HOME:-$HOME/.composer}:/tmp --user $(id -u):$(id -g) composer install --ignore-platform-reqs --no-scripts
-docker run -it --rm -v  "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint/tools/php-cs-fixer -v ${COMPOSER_HOME:-$HOME/.composer}:/tmp --user $(id -u):$(id -g) composer install --ignore-platform-reqs --no-scripts
+# Example
+docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
 
-# Run code style check
-docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint php:7.4-cli php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+# PHP_VERSION: choose between 7.4, 8.0 and 8.1
+docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" .
+docker build -t xml-lint:php-8.0 --build-arg=PHP_VERSION="8.0" .
+docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
 
-# Run tests
-docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint --user $(id -u):$(id -g) php:7.4-cli php vendor/bin/phpunit
-docker run -it --rm -v "$PWD":/usr/src/xml-lint -w /usr/src/xml-lint --user $(id -u):$(id -g) php:7.4-cli php vendor/bin/behat
+# Run with code style check
+docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" --build-arg=PHP_CS_FIXER=true .
+
+# Use this image to run xml-lint:
+cd tests/functional/_testdata
+docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-7.4 -r -v -- ./
 ```
 
 
