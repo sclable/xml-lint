@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2020 Sclable Business Solutions GmbH
+ * @copyright (c) 2022 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,7 +26,7 @@ class Command extends BaseCommand
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getSynopsis($short = false)
+    public function getSynopsis($short = false): string
     {
         $key = $short ? 'short' : 'long';
 

@@ -40,6 +40,40 @@ To lint a directory and all its subdirectories:
 * `-s` skip the xsd validation
 
 
+Development
+-----------
+
+### Run tests
+
+```shell
+# check code style
+php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+
+# run tests
+php vendor/bin/phpunit
+php vendor/bin/behat
+```
+
+Using docker:
+
+```shell
+# Example
+docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+
+# PHP_VERSION: choose between 7.4, 8.0 and 8.1
+docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" .
+docker build -t xml-lint:php-8.0 --build-arg=PHP_VERSION="8.0" .
+docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+
+# Run with code style check
+docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" --build-arg=PHP_CS_FIXER=true .
+
+# Use this image to run xml-lint:
+cd tests/functional/_testdata
+docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-7.4 -r -v -- ./
+```
+
+
 Changelog
 ---------
 
