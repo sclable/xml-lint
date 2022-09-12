@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2020 Sclable Business Solutions GmbH
+ * @copyright (c) 2022 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -60,12 +60,12 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->setCommand(
             $this->getApplication()->find(LintCommand::COMMAND_NAME)
         );
 
-        parent::execute($input, $output);
+        return parent::execute($input, $output);
     }
 }
