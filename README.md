@@ -58,12 +58,13 @@ Using docker:
 
 ```shell
 # Example
-docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
 
-# PHP_VERSION: choose between 7.4, 8.0 and 8.1
+# PHP_VERSION: choose between 7.4, 8.0, 8.1 and 8.2
 docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" .
 docker build -t xml-lint:php-8.0 --build-arg=PHP_VERSION="8.0" .
 docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
 
 # Run with code style check
 docker build -t xml-lint:php-7.4 --build-arg=PHP_VERSION="7.4" --build-arg=PHP_CS_FIXER=true .
