@@ -1,6 +1,12 @@
 Sclable XML Lint - Changelog
 ============================
 
+0.6.0
+-----
+
+* Add support for PHP 8.2
+* Drop support for PHP 7.4
+
 0.5.0
 -----
 
