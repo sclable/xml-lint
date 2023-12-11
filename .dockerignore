@@ -1,0 +1,7 @@
+vendor
+*.cache
+composer.lock
+tools/php-cs-fixer/composer.lock
+.git
+.idea
+Dockerfile

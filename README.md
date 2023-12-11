@@ -3,7 +3,7 @@ Sclable XML Lint
 
 A php tool to lint and validate xml files from the commandline.
 
-[![Build Status](https://travis-ci.org/sclable/xml-lint.svg?branch=master)](https://travis-ci.org/sclable/xml-lint) [![Latest Stable Version](https://poser.pugx.org/sclable/xml-lint/v/stable)](https://packagist.org/packages/sclable/xml-lint) [![Total Downloads](https://poser.pugx.org/sclable/xml-lint/downloads)](https://packagist.org/packages/sclable/xml-lint) [![Latest Unstable Version](https://poser.pugx.org/sclable/xml-lint/v/unstable)](https://packagist.org/packages/sclable/xml-lint) [![License](https://poser.pugx.org/sclable/xml-lint/license)](https://packagist.org/packages/sclable/xml-lint)
+[![Build Status](https://travis-ci.com/sclable/xml-lint.svg?branch=main)](https://travis-ci.com/sclable/xml-lint) [![Latest Stable Version](https://poser.pugx.org/sclable/xml-lint/v)](//packagist.org/packages/sclable/xml-lint) [![Total Downloads](https://poser.pugx.org/sclable/xml-lint/downloads)](//packagist.org/packages/sclable/xml-lint) [![License](https://poser.pugx.org/sclable/xml-lint/license)](//packagist.org/packages/sclable/xml-lint)
 
 XML Lint checks the syntax of any xml files and validates the file against the XSD schema defined in the file.
 
@@ -38,6 +38,40 @@ To lint a directory and all its subdirectories:
 * `-r 0` don't search recursive (if the argument is a directory)
 * `-e name` exclude files or directories containing 'name'
 * `-s` skip the xsd validation
+
+
+Development
+-----------
+
+### Run tests
+
+```shell
+# check code style
+php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+
+# run tests
+php vendor/bin/phpunit
+php vendor/bin/behat
+```
+
+Using docker:
+
+```shell
+# Example
+docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
+
+# PHP_VERSION: choose between 8.0, 8.1 and 8.2
+docker build -t xml-lint:php-8.0 --build-arg=PHP_VERSION="8.0" .
+docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
+
+# Run with code style check
+docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" --build-arg=PHP_CS_FIXER=true .
+
+# Use this image to run xml-lint:
+cd tests/functional/_testdata
+docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-8.2 -r -v -- ./
+```
 
 
 Changelog
