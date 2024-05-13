@@ -58,19 +58,20 @@ Using docker:
 
 ```shell
 # Example
-docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
+docker build -t xml-lint:php-8.3 --build-arg=PHP_VERSION="8.3" .
 
-# PHP_VERSION: choose between 8.0, 8.1 and 8.2
+# PHP_VERSION: choose between 8.0, 8.1, 8.2 and 8.3
 docker build -t xml-lint:php-8.0 --build-arg=PHP_VERSION="8.0" .
 docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
 docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
+docker build -t xml-lint:php-8.3 --build-arg=PHP_VERSION="8.3" .
 
 # Run with code style check
-docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" --build-arg=PHP_CS_FIXER=true .
+docker build -t xml-lint:php-8.3 --build-arg=PHP_VERSION="8.3" --build-arg=PHP_CS_FIXER=true .
 
 # Use this image to run xml-lint:
 cd tests/functional/_testdata
-docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-8.2 -r -v -- ./
+docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-8.3 -r -v -- ./
 ```
 
 
