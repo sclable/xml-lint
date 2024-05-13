@@ -162,7 +162,7 @@ class LintCommand extends Command
         }
 
         if ($this->input->hasOption(self::OPTION_EXCLUDE)) {
-            $exclude = explode(',', $this->input->getOption(self::OPTION_EXCLUDE));
+            $exclude = explode(',', (string) $this->input->getOption(self::OPTION_EXCLUDE));
             $finder->exclude($exclude);
         }
 
