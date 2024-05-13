@@ -129,13 +129,24 @@ class XsdValidation implements ValidationInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $attribute = $firstChild->getAttribute('xsi:noNamespaceSchemaLocation');
+        $schemaLocation = $firstChild->getAttribute('xsi:schemaLocation');
+        $noNamespaceSchemaLocation = $firstChild->getAttribute('xsi:noNamespaceSchemaLocation');
 
-        if (empty($attribute)) {
+        if ($schemaLocation === '' && $noNamespaceSchemaLocation === '') {
             return false;
         }
 
-        return $attribute;
+        if ($noNamespaceSchemaLocation !== '') {
+            return $noNamespaceSchemaLocation;
+        }
+
+        $parts = explode(' ', $schemaLocation);
+
+        if (count($parts) === 2) {
+            return trim($parts[1]);
+        }
+
+        return false;
     }
 
     /**
