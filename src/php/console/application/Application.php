@@ -74,7 +74,7 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * {@inheritdoc}
      */
-    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
+    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output): int
     {
         if ('version' != $command->getName()) {
             $output->writeln($this->getLongVersion());

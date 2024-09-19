@@ -97,7 +97,7 @@ class LintCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->start = microtime(true);
         $this->output = $output;

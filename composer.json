@@ -18,8 +18,8 @@
     "bin": ["bin/xmllint"],
     "require": {
         "php": "8.0.*|8.1.*|8.2.*|8.3.*",
-        "symfony/console": "5.3.*|5.4.*|6.*|7.*",
-        "symfony/finder": "5.3.*|5.4.*|6.*|7.*",
+        "symfony/console": "5.3.*|5.4.*|6.*",
+        "symfony/finder": "5.3.*|5.4.*|6.*",
         "ext-libxml": "*",
         "ext-dom": "*"
     },
