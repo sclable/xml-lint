@@ -49,7 +49,7 @@ class ValidationCollectionTest extends TestCase
         $this->assertEquals($expected, $collection->validateFile(FileReport::create('some_file.xml')));
     }
 
-    public function getMockReturnValues()
+    public static function getMockReturnValues()
     {
         return [
             [true, true, true],
