@@ -6,7 +6,7 @@ $fixers = [
   'combine_consecutive_unsets' => true,
   'no_useless_else' => true,
   'no_useless_return' => true,
-  'ordered_imports' => ['sortAlgorithm' => 'length'],
+  'ordered_imports' => ['sort_algorithm' => 'length'],
   'concat_space' => [
     'spacing' => 'one',
   ],
@@ -19,7 +19,9 @@ $fixers = [
   'phpdoc_order' => true,
   'phpdoc_types_order' => true,
   'general_phpdoc_annotation_remove' => [
-    'author'
+    'annotations' => [
+      'author',
+    ],
   ],
   'void_return' => false,
   'single_trait_insert_per_statement' => false,
@@ -34,7 +36,7 @@ $fixers = [
     ],
   ],
   'header_comment' => [
-    'commentType' => 'PHPDoc',
+    'comment_type' => 'PHPDoc',
     'header' => 'This file is part of the Sclable Xml Lint Package.
 
 @copyright (c) ' . date('Y') . ' Sclable Business Solutions GmbH
@@ -46,7 +48,7 @@ file that was distributed with this source code.',
   ],
 ];
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setFinder(
       PhpCsFixer\Finder::create()
         ->in(__DIR__ . '/src')

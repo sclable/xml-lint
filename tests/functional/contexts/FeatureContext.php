@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2022 Sclable Business Solutions GmbH
+ * @copyright (c) 2025 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -51,8 +51,6 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     /**
      * @Given the file :file
-     *
-     * @param $file
      */
     public function theFile($file)
     {
@@ -71,8 +69,6 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     /**
      * @Then I have a return code :code
-     *
-     * @param $code
      *
      * @throws \Exception
      */

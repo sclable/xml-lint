@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2022 Sclable Business Solutions GmbH
+ * @copyright (c) 2025 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -34,9 +34,6 @@ class XsdValidation implements ValidationInterface
         libxml_use_internal_errors(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateFile(FileReport $report)
     {
         $file = $report->getFile()->getRealPath();
@@ -85,7 +82,7 @@ class XsdValidation implements ValidationInterface
      */
     private function getSchemaValidationSource($filename, $report)
     {
-        if ((0 === preg_match('/^(http|https|ftp):/i', $filename))) {
+        if (0 === preg_match('/^(http|https|ftp):/i', $filename)) {
             if (false === file_exists($filename)) {
                 $filename = $report->getFile()->getPath() . '/' . $filename;
             }

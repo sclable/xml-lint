@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2022 Sclable Business Solutions GmbH
+ * @copyright (c) 2025 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,12 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Application extends \Symfony\Component\Console\Application
 {
-    const VERSION = 'dev';
-    const NAME = 'Sclable Xml Lint';
+    public const VERSION = 'dev';
+    public const NAME = 'Sclable Xml Lint';
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         $name = self::NAME;
@@ -39,9 +36,6 @@ class Application extends \Symfony\Component\Console\Application
         $this->setDefaultCommand(LintCommand::COMMAND_NAME);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultCommands(): array
     {
         parent::getDefaultCommands();
@@ -53,8 +47,6 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function run(?InputInterface $input = null, ?OutputInterface $output = null): int
@@ -71,9 +63,6 @@ class Application extends \Symfony\Component\Console\Application
         return parent::run($input, $output);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output): int
     {
         if ('version' != $command->getName()) {
