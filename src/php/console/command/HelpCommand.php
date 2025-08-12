@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2022 Sclable Business Solutions GmbH
+ * @copyright (c) 2025 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,9 +27,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this->ignoreValidationErrors();
@@ -57,9 +54,6 @@ EOF
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->setCommand(

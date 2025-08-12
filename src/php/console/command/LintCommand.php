@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2022 Sclable Business Solutions GmbH
+ * @copyright (c) 2025 Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,12 +30,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class LintCommand extends Command
 {
-    const COMMAND_NAME = 'lint';
-    const ARGUMENT_FILE = 'file';
-    const OPTION_RECURSIVE = 'recursive';
-    const OPTION_EXCLUDE = 'exclude';
-    const OPTION_PATTERN = 'pattern';
-    const OPTION_NO_XSD = 'skip-xsd';
+    public const COMMAND_NAME = 'lint';
+    public const ARGUMENT_FILE = 'file';
+    public const OPTION_RECURSIVE = 'recursive';
+    public const OPTION_EXCLUDE = 'exclude';
+    public const OPTION_PATTERN = 'pattern';
+    public const OPTION_NO_XSD = 'skip-xsd';
 
     /** @var OutputInterface */
     protected $output;
@@ -52,9 +52,6 @@ class LintCommand extends Command
     /** @var float */
     private $start;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -94,9 +91,6 @@ class LintCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->start = microtime(true);
