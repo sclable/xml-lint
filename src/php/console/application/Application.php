@@ -57,7 +57,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function run(InputInterface $input = null, OutputInterface $output = null): int
+    public function run(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
         if (null === $input) {
             // rewrite the input for single command usage
