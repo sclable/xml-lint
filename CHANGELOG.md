@@ -5,6 +5,42 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+First stable release. The command line (options, arguments and exit codes) is the
+public API, so breaking changes only happen in major versions from now on.
+See [UPGRADE-1.0.md](UPGRADE-1.0.md) for how to upgrade.
+
+### Added
+
+- Support for PHP 8.5, based on [#44](https://github.com/sclable/xml-lint/pull/44) by @ischmittis.
+- Support for Symfony 8.1 and newer.
+- `xml-lint` command. It does the same as `xmllint`, but doesn't clash with the libxml2 tool of that name. The Docker image uses it too.
+- `-r` accepts `yes`/`no`, `true`/`false`, `on`/`off` and `1`/`0`.
+
+### Changed
+
+- Requires PHP 8.2 or newer. New PHP minor versions no longer need a new release.
+- Requires symfony/console and symfony/finder 7.4 or 8.1+.
+- A bare `-r` now scans subdirectories. Before, it turned recursion off. An invalid value like `-r foo` is an error.
+- The header line shows the installed version instead of `dev`.
+- All PHP classes are `final` and `@internal`, use native types, and `ValidationInterface::validateFile()` returns `bool`.
+
+### Removed
+
+- Support for PHP 8.1.
+- Support for Symfony 5.3, 5.4, 6.x and 7.0 to 7.3.
+
+### Fixed
+
+- `-r false`, `-r no` and `-r off` still scanned subdirectories. Only `-r 0` worked.
+- `-e "a, b"` did not exclude `b` because of the space.
+- An empty pattern like `-p " "` matched no files, so the lint passed without checking anything.
+- "file not found" errors didn't show the path.
+- A relative file name was printed as `/file.xml`.
+- `--help --format=json` and `--format=xml` printed invalid output.
+- `-q` printed nothing, not even the errors. It now prints only the error report.
+
 ## [0.9.0] - 2025-08-12
 
 - Add support for PHP 8.4
@@ -72,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - recursive option (default is 'yes')
 - exclude option
 
+[Unreleased]: https://github.com/sclable/xml-lint/compare/0.9.0...HEAD
 [0.9.0]: https://github.com/sclable/xml-lint/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/sclable/xml-lint/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/sclable/xml-lint/compare/0.6.0...0.7.0
