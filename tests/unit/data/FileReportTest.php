@@ -29,11 +29,8 @@ class FileReportTest extends TestCase
     public function testHasProblemsReturnsTrueOnProblems()
     {
         $report = new FileReport(new \SplFileInfo('no_file.xml'));
-        $problem = $this->getMockBuilder(ValidationProblem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $problem = $this->createStub(ValidationProblem::class);
 
-        /* @var ValidationProblem $problem */
         $report->addProblem($problem);
         $this->assertTrue($report->hasProblems());
     }

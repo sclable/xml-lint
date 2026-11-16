@@ -1,4 +1,4 @@
-ARG PHP_VERSION
+ARG PHP_VERSION=8.4
 FROM php:${PHP_VERSION}-cli-alpine AS dependencies
 ARG PHP_CS_FIXER
 RUN apk add --update --no-cache zip unzip php-zip

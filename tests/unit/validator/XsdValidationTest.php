@@ -14,13 +14,13 @@ namespace sclable\xmlLint\tests\unit\validator;
 use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\XsdValidation;
+use PHPUnit\Framework\Attributes\CoversClass;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
  * Class XsdValidationTest.
- *
- * @coversDefaultClass \sclable\xmlLint\validator\XsdValidation
  */
+#[CoversClass(XsdValidation::class)]
 class XsdValidationTest extends TestCase
 {
     public function testValidateIntactFileWithXsd()
@@ -102,9 +102,6 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($validator->validateFile($mock));
     }
 
-    /**
-     * @covers ::<private>
-     */
     public function testUseInternalCache()
     {
         $file = new \SplFileInfo(
@@ -117,9 +114,6 @@ class XsdValidationTest extends TestCase
         $this->assertTrue($validator->validateFile($report));
     }
 
-    /**
-     * @covers ::<private>
-     */
     public function testEmptyXml()
     {
         $file = new \SplFileInfo(
@@ -131,9 +125,6 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($validator->validateFile($report));
     }
 
-    /**
-     * @covers ::<private>
-     */
     public function testEmptyXsd()
     {
         $file = new \SplFileInfo(
@@ -154,9 +145,6 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($validator->validateFile($mock));
     }
 
-    /**
-     * @covers ::<private>
-     */
     public function testDeadUrlXsd()
     {
         $file = new \SplFileInfo(

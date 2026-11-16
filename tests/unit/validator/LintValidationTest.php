@@ -85,7 +85,7 @@ class LintValidationTest extends TestCase
         $file = new \SplFileInfo($filename);
         $fileMod = $file->getPerms();
         try {
-            chmod($filename, 0333);
+            chmod($filename, 0o333);
             $mock = $this->getMockBuilder(FileReport::class)
                 ->onlyMethods(['reportProblem'])
                 ->setConstructorArgs([$file])

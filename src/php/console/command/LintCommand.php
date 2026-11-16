@@ -52,7 +52,7 @@ class LintCommand extends Command
     /** @var float */
     private $start;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(self::COMMAND_NAME)

@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->ignoreValidationErrors();
 
@@ -45,12 +45,13 @@ class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command help'),
             ])
             ->setDescription('Display help')
-            ->setHelp(<<<EOF
-The <info>%command.name%</info> command displays the help.
-You can also output the help in other formats by using the <comment>--format</comment> option:
+            ->setHelp(
+                <<<EOF
+                    The <info>%command.name%</info> command displays the help.
+                    You can also output the help in other formats by using the <comment>--format</comment> option:
 
-  <info>php %command.full_name% --help --format=xml</info>
-EOF
+                      <info>php %command.full_name% --help --format=xml</info>
+                    EOF
             );
     }
 

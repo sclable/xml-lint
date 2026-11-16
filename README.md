@@ -43,15 +43,34 @@ To lint a directory and all its subdirectories:
 Development
 -----------
 
+### Install
+
+```shell
+composer install
+composer install --working-dir=tools/php-cs-fixer
+```
+
+### Code style
+
+```shell
+# check
+composer cs
+
+# fix
+composer cs:fix
+```
+
 ### Run tests
 
 ```shell
-# check code style
-php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+# all tests
+composer test
 
-# run tests
-php vendor/bin/phpunit
-php vendor/bin/behat
+# unit tests (PHPUnit)
+composer test:unit
+
+# functional tests (Behat)
+composer test:functional
 ```
 
 Using docker:
@@ -60,11 +79,11 @@ Using docker:
 # Example
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" .
 
-# PHP_VERSION: choose between 8.1, 8.2, 8.3 and 8.4
-docker build -t xml-lint:php-8.1 --build-arg=PHP_VERSION="8.1" .
+# PHP_VERSION: choose between 8.2, 8.3, 8.4 and 8.5 (default: 8.4)
 docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
 docker build -t xml-lint:php-8.3 --build-arg=PHP_VERSION="8.3" .
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" .
+docker build -t xml-lint:php-8.5 --build-arg=PHP_VERSION="8.5" .
 
 # Run with code style check
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" --build-arg=PHP_CS_FIXER=true .
