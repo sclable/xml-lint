@@ -195,7 +195,7 @@ class LintCommand extends Command
             }
 
             $file = $report->getFile();
-            $this->output->writeln('file: ' . $file->getPath() . DIRECTORY_SEPARATOR . $file->getFilename());
+            $this->output->writeln('file: ' . $file->getPathname());
 
             foreach ($report->getProblems() as $problem) {
                 $this->output->write(
