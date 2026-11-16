@@ -201,28 +201,27 @@ final class LintCommand extends Command
     }
 
     /**
-     * format and print the errors from the queue to the output.
+     * format and print the errors from the queue to the output, also with --quiet.
      */
     private function printReportsOfFilesWithProblems(): void
     {
-        $this->output->writeln(PHP_EOL . '<error>errors:</error>');
+        $lines = [PHP_EOL . '<error>errors:</error>'];
 
         foreach ($this->reports as $report) {
             if (false === $report->hasProblems()) {
                 continue;
             }
 
-            $file = $report->getFile();
-            $this->output->writeln('file: ' . $file->getPathname());
+            $lines[] = 'file: ' . $report->getFile()->getPathname();
 
             foreach ($report->getProblems() as $problem) {
-                $this->output->write(
-                    '  > ' . $problem->getMessage() . PHP_EOL
-                );
+                $lines[] = '  > ' . $problem->getMessage();
             }
 
-            $this->output->write(' - - ' . PHP_EOL);
+            $lines[] = ' - - ';
         }
+
+        $this->output->writeln($lines, OutputInterface::VERBOSITY_QUIET);
     }
 
     /**

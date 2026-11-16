@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use sclable\xmlLint\console\command\LintCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use sclable\xmlLint\console\application\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 
 #[CoversClass(LintCommand::class)]
@@ -45,6 +46,16 @@ class LintCommandTest extends TestCase
 
         $this->assertSame(1, $tester->getStatusCode());
         $this->assertStringContainsString(PHP_EOL . 'file: broken.xml' . PHP_EOL, $tester->getDisplay());
+    }
+
+    public function testQuietPrintsOnlyTheErrors(): void
+    {
+        $tester = new CommandTester((new Application())->find(LintCommand::COMMAND_NAME));
+        $tester->execute(['file' => 'broken.xml'], ['verbosity' => OutputInterface::VERBOSITY_QUIET]);
+
+        $this->assertSame(1, $tester->getStatusCode());
+        $this->assertStringContainsString('file: broken.xml' . PHP_EOL . '  > Line ', $tester->getDisplay());
+        $this->assertStringNotContainsString('progress', $tester->getDisplay());
     }
 
     /**
