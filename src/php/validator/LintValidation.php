@@ -35,8 +35,8 @@ class LintValidation implements ValidationInterface
     {
         $realPath = $report->getFile()->getRealPath();
 
-        if (false === is_file($realPath)) {
-            $report->reportProblem('file not found: ' . $realPath);
+        if (false === $realPath || false === is_file($realPath)) {
+            $report->reportProblem('file not found: ' . $report->getFile()->getPathname());
 
             return false;
         }

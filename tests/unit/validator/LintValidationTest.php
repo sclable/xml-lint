@@ -70,8 +70,9 @@ class LintValidationTest extends TestCase
             ->onlyMethods(['reportProblem'])
             ->setConstructorArgs([$file])
             ->getMock();
-        $mock->expects($this->exactly(1))
-            ->method('reportProblem');
+        $mock->expects($this->once())
+            ->method('reportProblem')
+            ->with('file not found: does_not_exist.xml');
 
         /** @var FileReport $mock */
         $return = $validator->validateFile($mock);
