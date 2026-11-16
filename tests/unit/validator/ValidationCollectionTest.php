@@ -24,13 +24,8 @@ use sclable\xmlLint\validator\ValidationCollection;
  */
 class ValidationCollectionTest extends TestCase
 {
-    /**
-     * @param bool $return1
-     * @param bool $return2
-     * @param bool $expected
-     */
     #[DataProvider('getMockReturnValues')]
-    public function testCollectionCorrectReturnValue($return1, $return2, $expected): void
+    public function testCollectionCorrectReturnValue(bool $return1, bool $return2, bool $expected): void
     {
         $mock1 = $this->createStub(ValidationInterface::class);
         $mock2 = $this->createStub(ValidationInterface::class);
@@ -44,10 +39,13 @@ class ValidationCollectionTest extends TestCase
         $collection->addValidation($mock1)
             ->addValidation($mock2);
 
-        $this->assertEquals($expected, $collection->validateFile(FileReport::create('some_file.xml')));
+        $this->assertSame($expected, $collection->validateFile(FileReport::create('some_file.xml')));
     }
 
-    public static function getMockReturnValues()
+    /**
+     * @return list<array{bool, bool, bool}>
+     */
+    public static function getMockReturnValues(): array
     {
         return [
             [true, true, true],
