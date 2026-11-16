@@ -13,6 +13,7 @@ namespace sclable\xmlLint\tests\unit\validator;
 
 use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
+use PHPUnit\Framework\Attributes\DataProvider;
 use sclable\xmlLint\validator\ValidationInterface;
 use sclable\xmlLint\validator\ValidationCollection;
 
@@ -22,18 +23,15 @@ use sclable\xmlLint\validator\ValidationCollection;
 class ValidationCollectionTest extends TestCase
 {
     /**
-     * @dataProvider getMockReturnValues
-     *
      * @param bool $return1
      * @param bool $return2
      * @param bool $expected
      */
+    #[DataProvider('getMockReturnValues')]
     public function testCollectionCorrectReturnValue($return1, $return2, $expected)
     {
-        $mock1 = $this->getMockBuilder(ValidationInterface::class)
-            ->getMock();
-        $mock2 = $this->getMockBuilder(ValidationInterface::class)
-            ->getMock();
+        $mock1 = $this->createStub(ValidationInterface::class);
+        $mock2 = $this->createStub(ValidationInterface::class);
 
         $mock1->method('validateFile')
             ->willReturn($return1);
@@ -41,8 +39,6 @@ class ValidationCollectionTest extends TestCase
             ->willReturn($return2);
 
         $collection = new ValidationCollection();
-        /* @var ValidationInterface $mock1 */
-        /* @var ValidationInterface $mock2 */
         $collection->addValidation($mock1)
             ->addValidation($mock2);
 
