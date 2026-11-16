@@ -109,11 +109,13 @@ jobs:
           composer config repositories.local '{"type": "path", "url": "../xml-lint", "options": {"symlink": false}}'
           composer require --no-interaction --dev sclable/xml-lint:@dev
 
-      - name: Run installed binary
+      - name: Run installed binaries
         working-directory: project
         run: |
           data=../xml-lint/tests/functional/_testdata
-          vendor/bin/xmllint "$data/with_xsd.xml"
-          if vendor/bin/xmllint "$data/broken.xml"; then
-            echo "expected a failure for broken.xml" && exit 1
-          fi
+          for bin in xmllint xml-lint; do
+            vendor/bin/$bin "$data/with_xsd.xml"
+            if vendor/bin/$bin "$data/broken.xml"; then
+              echo "expected $bin to fail for broken.xml" && exit 1
+            fi
+          done
