@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -38,7 +40,7 @@ $fixers = [
     'ternary_to_null_coalescing' => true,
     'pow_to_exponentiation' => false,
     'random_api_migration' => false,
-    'declare_strict_types' => false,
+    'declare_strict_types' => true,
     'phpdoc_no_alias_tag' => [
         'replacements' => [
             'type' => 'var',
@@ -59,6 +61,7 @@ file that was distributed with this source code.',
 ];
 
 return (new PhpCsFixer\Config())
+    ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
         ->in(__DIR__ . '/src')
