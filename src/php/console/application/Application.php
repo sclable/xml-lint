@@ -30,18 +30,14 @@ class Application extends \Symfony\Component\Console\Application
     public const VERSION = 'dev';
     public const NAME = 'Sclable Xml Lint';
 
-    public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
+    public function __construct()
     {
-        $name = self::NAME;
-        $version = self::VERSION;
-        parent::__construct($name, $version);
+        parent::__construct(self::NAME, self::VERSION);
         $this->setDefaultCommand(LintCommand::COMMAND_NAME);
     }
 
     protected function getDefaultCommands(): array
     {
-        parent::getDefaultCommands();
-
         return [
             new HelpCommand(),
             new LintCommand(),
