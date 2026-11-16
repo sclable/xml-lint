@@ -15,13 +15,17 @@ namespace sclable\xmlLint\tests\unit\console\command;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use sclable\xmlLint\console\command\LintCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use sclable\xmlLint\console\application\Application;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 
 #[CoversClass(LintCommand::class)]
 class LintCommandTest extends TestCase
 {
+    private const TREE = __DIR__ . '/../../_testdata/tree';
+
     private string $cwd;
 
     protected function setUp(): void
@@ -41,6 +45,40 @@ class LintCommandTest extends TestCase
 
         $this->assertSame(1, $tester->getStatusCode());
         $this->assertStringContainsString(PHP_EOL . 'file: broken.xml' . PHP_EOL, $tester->getDisplay());
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, int}>
+     */
+    public static function recursiveOptions(): iterable
+    {
+        yield 'default' => [[], 3];
+        yield 'bare option' => [['--recursive' => null], 3];
+        yield '1' => [['--recursive' => '1'], 3];
+        yield 'yes' => [['--recursive' => 'yes'], 3];
+        yield '0' => [['--recursive' => '0'], 1];
+        yield 'false' => [['--recursive' => 'false'], 1];
+        yield 'no' => [['--recursive' => 'no'], 1];
+        yield 'off' => [['--recursive' => 'off'], 1];
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    #[DataProvider('recursiveOptions')]
+    public function testRecursiveOption(array $options, int $expectedFiles): void
+    {
+        $tester = $this->execute(['file' => self::TREE] + $options);
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertStringContainsString($expectedFiles . ' files /', $tester->getDisplay());
+    }
+
+    public function testRejectsInvalidRecursiveValue(): void
+    {
+        $this->expectException(InvalidOptionException::class);
+
+        $this->execute(['file' => self::TREE, '--recursive' => 'foo']);
     }
 
     /**

@@ -22,6 +22,7 @@ use sclable\xmlLint\validator\ValidationInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * Class LintCommand.
@@ -69,7 +70,7 @@ class LintCommand extends Command
                 self::OPTION_RECURSIVE,
                 'r',
                 InputOption::VALUE_OPTIONAL,
-                'Whether to scan directories recursive.',
+                'Whether to scan directories recursive (use 0, false, no or off to disable).',
                 true
             )
             ->addOption(
@@ -98,6 +99,7 @@ class LintCommand extends Command
         $this->start = microtime(true);
         $this->output = $output;
         $this->input = $input;
+        $recursive = $this->isRecursive();
 
         if ($input->getOption(self::OPTION_NO_XSD)) {
             $this->validator = ValidationFactory::createLintOnlyValidation();
@@ -109,7 +111,7 @@ class LintCommand extends Command
 
         $output->writeln('progress: ');
         if (is_dir($file)) {
-            $status = $this->lintDir($file);
+            $status = $this->lintDir($file, $recursive);
         } else {
             $status = $this->lintFile(new \SplFileInfo($file));
         }
@@ -132,11 +134,12 @@ class LintCommand extends Command
     /**
      * lint the content of a directory, recursive if defined.
      *
-     * @param string $dir path/to/dir
+     * @param string $dir       path/to/dir
+     * @param bool   $recursive
      *
      * @return bool
      */
-    private function lintDir($dir)
+    private function lintDir($dir, $recursive)
     {
         $finder = Finder::create();
         $finder->files()
@@ -153,7 +156,7 @@ class LintCommand extends Command
                 ->name('*.xml');
         }
 
-        if (!$this->input->getOption(self::OPTION_RECURSIVE)) {
+        if (!$recursive) {
             $finder->depth(0);
         }
 
@@ -180,6 +183,26 @@ class LintCommand extends Command
         }
 
         return $ret;
+    }
+
+    /**
+     * a bare -r/--recursive enables recursion, a boolean-like value sets it.
+     */
+    private function isRecursive(): bool
+    {
+        $value = $this->input->getOption(self::OPTION_RECURSIVE);
+
+        if (null === $value || true === $value) {
+            return true;
+        }
+
+        $recursive = filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+
+        if (null === $recursive) {
+            throw new InvalidOptionException(sprintf('The "--recursive" option expects a boolean value like 1 or 0, "%s" given.', $value));
+        }
+
+        return $recursive;
     }
 
     /**
