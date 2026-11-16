@@ -18,40 +18,23 @@ namespace sclable\xmlLint\data;
  */
 class FileReport
 {
-    /** @var \SplFileInfo */
-    private $file;
+    /** @var list<ValidationProblem> */
+    private array $problems = [];
 
-    /** @var ValidationProblem[] */
-    private $problems = [];
-
-    /**
-     * FileReport constructor.
-     */
-    public function __construct(\SplFileInfo $file)
+    public function __construct(private readonly \SplFileInfo $file)
     {
-        $this->file = $file;
     }
 
-    /**
-     * @param \SplFileInfo|string $file
-     *
-     * @return static
-     */
-    public static function create($file)
+    public static function create(\SplFileInfo|string $file): static
     {
-        if (false === ($file instanceof \SplFileInfo)) {
+        if (is_string($file)) {
             $file = new \SplFileInfo($file);
         }
 
         return new static($file);
     }
 
-    /**
-     * @param string $msg
-     *
-     * @return $this
-     */
-    public function reportProblem($msg)
+    public function reportProblem(string $msg): static
     {
         $this->addProblem(ValidationProblem::create($msg));
 
@@ -60,10 +43,8 @@ class FileReport
 
     /**
      * report a problem to a file.
-     *
-     * @return $this
      */
-    public function addProblem(ValidationProblem $problem)
+    public function addProblem(ValidationProblem $problem): static
     {
         $this->problems[] = $problem;
 
@@ -72,26 +53,21 @@ class FileReport
 
     /**
      * indicate whether a file has any reported problems or not.
-     *
-     * @return bool
      */
-    public function hasProblems()
+    public function hasProblems(): bool
     {
-        return !empty($this->problems);
+        return [] !== $this->problems;
     }
 
-    /**
-     * @return \SplFileInfo
-     */
-    public function getFile()
+    public function getFile(): \SplFileInfo
     {
         return $this->file;
     }
 
     /**
-     * @return ValidationProblem[]
+     * @return list<ValidationProblem>
      */
-    public function getProblems()
+    public function getProblems(): array
     {
         return $this->problems;
     }

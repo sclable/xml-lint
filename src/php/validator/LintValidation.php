@@ -21,19 +21,12 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  */
 class LintValidation implements ValidationInterface
 {
-    /** @var LibXmlErrorFormatter */
-    private $formatter;
-
-    /**
-     * LintValidation constructor.
-     */
-    public function __construct(LibXmlErrorFormatter $formatter)
+    public function __construct(private readonly LibXmlErrorFormatter $formatter)
     {
-        $this->formatter = $formatter;
         libxml_use_internal_errors(true);
     }
 
-    public function validateFile(FileReport $report)
+    public function validateFile(FileReport $report): bool
     {
         $realPath = $report->getFile()->getRealPath();
 

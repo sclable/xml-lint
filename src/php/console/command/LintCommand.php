@@ -40,20 +40,14 @@ class LintCommand extends Command
     public const OPTION_PATTERN = 'pattern';
     public const OPTION_NO_XSD = 'skip-xsd';
 
-    /** @var OutputInterface */
-    protected $output;
+    private OutputInterface $output;
 
-    /** @var InputInterface */
-    protected $input;
+    private InputInterface $input;
 
-    /** @var ValidationInterface */
-    private $validator;
+    private ValidationInterface $validator;
 
-    /** @var FileReport[] */
-    private $reports = [];
-
-    /** @var float */
-    private $start;
+    /** @var list<FileReport> */
+    private array $reports = [];
 
     protected function configure(): void
     {
@@ -96,7 +90,7 @@ class LintCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->start = microtime(true);
+        $start = microtime(true);
         $this->output = $output;
         $this->input = $input;
         $recursive = $this->isRecursive();
@@ -107,7 +101,7 @@ class LintCommand extends Command
             $this->validator = ValidationFactory::createDefaultCollection();
         }
 
-        $file = $input->getArgument(self::ARGUMENT_FILE);
+        $file = (string) $input->getArgument(self::ARGUMENT_FILE);
 
         $output->writeln('progress: ');
         if (is_dir($file)) {
@@ -125,7 +119,7 @@ class LintCommand extends Command
         $this->output->writeln(sprintf(
             PHP_EOL . '%d files / %1.2f seconds <info>done</info>',
             count($this->reports),
-            microtime(true) - $this->start
+            microtime(true) - $start
         ));
 
         return $status ? 0 : 1;
@@ -133,22 +127,16 @@ class LintCommand extends Command
 
     /**
      * lint the content of a directory, recursive if defined.
-     *
-     * @param string $dir       path/to/dir
-     * @param bool   $recursive
-     *
-     * @return bool
      */
-    private function lintDir($dir, $recursive)
+    private function lintDir(string $dir, bool $recursive): bool
     {
         $finder = Finder::create();
         $finder->files()
             ->in($dir);
 
-        $patterns = $this->input->getOption(self::OPTION_PATTERN);
-        if (!empty($patterns)) {
-            $patterns = explode(',', $patterns);
-            foreach ($patterns as $pattern) {
+        $patterns = (string) $this->input->getOption(self::OPTION_PATTERN);
+        if ('' !== $patterns) {
+            foreach (explode(',', $patterns) as $pattern) {
                 $finder->name(trim($pattern));
             }
         } else {
@@ -211,7 +199,7 @@ class LintCommand extends Command
     /**
      * format and print the errors from the queue to the output.
      */
-    private function printReportsOfFilesWithProblems()
+    private function printReportsOfFilesWithProblems(): void
     {
         $this->output->writeln(PHP_EOL . '<error>errors:</error>');
 
@@ -235,10 +223,8 @@ class LintCommand extends Command
 
     /**
      * lint a file, pass errors to the queue.
-     *
-     * @return bool
      */
-    private function lintFile(\SplFileInfo $file)
+    private function lintFile(\SplFileInfo $file): bool
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->output->write('lint file ' . $file . ' ... ');

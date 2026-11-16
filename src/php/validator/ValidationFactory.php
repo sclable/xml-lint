@@ -20,10 +20,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  */
 class ValidationFactory
 {
-    /**
-     * @return ValidationInterface
-     */
-    public static function createDefaultCollection()
+    public static function createDefaultCollection(): ValidationInterface
     {
         $collection = new ValidationCollection();
 
@@ -35,10 +32,7 @@ class ValidationFactory
         return $collection;
     }
 
-    /**
-     * @return ValidationInterface
-     */
-    public static function createLintOnlyValidation()
+    public static function createLintOnlyValidation(): ValidationInterface
     {
         $formatter = new LibXmlErrorFormatter();
 

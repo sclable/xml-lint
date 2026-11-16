@@ -20,13 +20,13 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
  */
 class Command extends BaseCommand
 {
-    /** @var array local synopsis runtime cache */
-    private $synopsis = [];
+    /** @var array<string, string> local synopsis runtime cache */
+    private array $synopsis = [];
 
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getSynopsis($short = false): string
+    public function getSynopsis(bool $short = false): string
     {
         $key = $short ? 'short' : 'long';
 

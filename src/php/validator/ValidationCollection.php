@@ -20,10 +20,10 @@ use sclable\xmlLint\data\FileReport;
  */
 class ValidationCollection implements ValidationInterface
 {
-    /** @var ValidationInterface[] */
-    private $collection = [];
+    /** @var list<ValidationInterface> */
+    private array $collection = [];
 
-    public function validateFile(FileReport $report)
+    public function validateFile(FileReport $report): bool
     {
         $status = true;
         foreach ($this->collection as $validation) {
@@ -33,7 +33,7 @@ class ValidationCollection implements ValidationInterface
         return $status;
     }
 
-    public function addValidation(ValidationInterface $validation)
+    public function addValidation(ValidationInterface $validation): static
     {
         $this->collection[] = $validation;
 

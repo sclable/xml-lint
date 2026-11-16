@@ -18,9 +18,14 @@ namespace sclable\xmlLint\validator\helper;
  */
 class LibXmlErrorFormatter
 {
-    private $format = 'Line %s: [%s] %s';
+    private string $format = 'Line %s: [%s] %s';
 
-    public function formatErrors(array $xmlErrors)
+    /**
+     * @param array<\LibXMLError> $xmlErrors
+     *
+     * @return array<string>
+     */
+    public function formatErrors(array $xmlErrors): array
     {
         $messages = [];
         foreach ($xmlErrors as $xmlError) {
@@ -30,7 +35,7 @@ class LibXmlErrorFormatter
         return array_unique($messages);
     }
 
-    private function format($xmlError)
+    private function format(\LibXMLError $xmlError): string
     {
         return sprintf(
             $this->format,
@@ -40,7 +45,7 @@ class LibXmlErrorFormatter
         );
     }
 
-    public function setFormat($format)
+    public function setFormat(string $format): static
     {
         $this->format = $format;
 

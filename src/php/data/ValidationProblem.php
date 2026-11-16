@@ -18,36 +18,20 @@ namespace sclable\xmlLint\data;
  */
 class ValidationProblem
 {
-    /** @var string */
-    private $msg = '';
-
     /**
      * factory method to create a validation problem.
-     *
-     * @param string $message
-     *
-     * @return ValidationProblem
      */
-    public static function create($message)
+    public static function create(string $message): static
     {
         return new static($message);
     }
 
-    /**
-     * ValidationProblem constructor.
-     *
-     * @param string $message
-     */
-    public function __construct($message)
+    public function __construct(private readonly string $message)
     {
-        $this->msg = $message;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
-        return $this->msg;
+        return $this->message;
     }
 }

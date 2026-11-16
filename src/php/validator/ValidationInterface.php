@@ -20,8 +20,5 @@ use sclable\xmlLint\data\FileReport;
  */
 interface ValidationInterface
 {
-    /**
-     * @return bool
-     */
-    public function validateFile(FileReport $report);
+    public function validateFile(FileReport $report): bool;
 }
