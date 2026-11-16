@@ -1,6 +1,0 @@
-# behat configuration
-default:
-  suites:
-      default:
-        paths: [ "%paths.base%/tests/functional" ]
-        contexts: [ sclable\xmlLint\tests\functional\contexts\FeatureContext ]

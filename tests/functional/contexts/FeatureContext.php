@@ -11,15 +11,17 @@
 
 namespace sclable\xmlLint\tests\functional\contexts;
 
+use Behat\Step\Then;
+use Behat\Step\When;
+use Behat\Step\Given;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Symfony\Component\Console\Tester\CommandTester;
 use sclable\xmlLint\console\application\Application;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext
+class FeatureContext implements Context
 {
     /** @var Application */
     protected $application;
@@ -38,7 +40,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      *
      * Every scenario gets its own context instance.
      * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
+     * context constructor through behat.php.
      */
     public function __construct()
     {
@@ -49,17 +51,13 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $this->commandTester = new CommandTester($command);
     }
 
-    /**
-     * @Given the file :file
-     */
+    #[Given('the file :file')]
     public function theFile($file)
     {
         $this->file = dirname(__DIR__) . '/_testdata/' . $file;
     }
 
-    /**
-     * @When I run lint
-     */
+    #[When('I run lint')]
     public function iRunLint()
     {
         $this->exitCode = $this->commandTester->execute([
@@ -68,10 +66,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I have a return code :code
-     *
      * @throws \Exception
      */
+    #[Then('I have a return code :code')]
     public function iHaveAReturnCode($code)
     {
         $code = (int) $code;
