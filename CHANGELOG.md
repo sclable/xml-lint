@@ -1,88 +1,124 @@
-Sclable XML Lint - Changelog
-============================
+# Changelog
 
-0.9.0
------
+All notable changes to this project are documented in this file.
 
-* Add support for PHP 8.4
-* Drop support for PHP 8.0
-* Update dependencies
-============================
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-0.8.0
------
+## [1.0.0] - 2026-11-16
 
-* Add support for Symfony 7
-* Drop support for Symfony 4
-============================
+First stable release. The command line (options, arguments and exit codes) is the
+public API, so breaking changes only happen in major versions from now on.
+See [UPGRADE-1.0.md](UPGRADE-1.0.md) for how to upgrade.
 
-0.7.0
------
+### Added
 
-* Add support for PHP 8.3
+- Support for PHP 8.5, based on [#44](https://github.com/sclable/xml-lint/pull/44) by @ischmittis.
+- Support for Symfony 8.1 and newer.
+- `xml-lint` command. It does the same as `xmllint`, but doesn't clash with the libxml2 tool of that name. The Docker image uses it too.
+- `-r` accepts `yes`/`no`, `true`/`false`, `on`/`off` and `1`/`0`.
 
-0.6.0
------
+### Changed
 
-* Add support for PHP 8.2
-* Drop support for PHP 7.4
+- Requires PHP 8.2 or newer. New PHP minor versions no longer need a new release.
+- Requires symfony/console and symfony/finder 7.4 or 8.1+.
+- A bare `-r` now scans subdirectories. Before, it turned recursion off. An invalid value like `-r foo` is an error.
+- The header line shows the installed version instead of `dev`.
+- All PHP classes are `final` and `@internal`, use native types, and `ValidationInterface::validateFile()` returns `bool`.
 
-0.5.0
------
+### Removed
 
-* Add support for PHP 8.1
-* Drop support for PHP 7.3
-* Chores: remove Travis integration
+- Support for PHP 8.1.
+- Support for Symfony 5.3, 5.4, 6.x and 7.0 to 7.3.
 
-0.4.0
------
+### Fixed
 
-* Add support for PHP 8
-* Drop support for PHP 7.2
-* Chores: Travis integration update
+- `-r false`, `-r no` and `-r off` still scanned subdirectories. Only `-r 0` worked.
+- `-e "a, b"` did not exclude `b` because of the space.
+- An empty pattern like `-p " "` matched no files, so the lint passed without checking anything.
+- "file not found" errors didn't show the path.
+- A relative file name was printed as `/file.xml`.
+- `--help --format=json` and `--format=xml` printed invalid output.
+- `-q` printed nothing, not even the errors. It now prints only the error report.
 
-0.3.0
------
+## [0.9.0] - 2025-08-12
 
-* Add support for symfony console / finder 5.*
-* Drop compatibility for PHP <7.2 and eol symfony versions
-* Update test frameworks to latest versions
+- Add support for PHP 8.4
+- Drop support for PHP 8.0
+- Update dependencies
 
+## [0.8.0] - 2024-09-25
 
-0.2.4
------
+- Add support for Symfony 7
+- Drop support for Symfony 4
 
-* update dependencies to symfony/finder & symfony/console (include 4.*)
+## [0.7.0] - 2024-05-13
 
+- Add support for PHP 8.3
 
-0.2.3
------
+## [0.6.0] - 2023-09-21
 
-* clean up composer file (move tests to autoload-dev)
+- Add support for PHP 8.2
+- Drop support for PHP 7.4
 
-0.2.2
------
+## [0.5.0] - 2022-03-14
 
-* update dependencies to symfony/finder & symfony/console
+- Add support for PHP 8.1
+- Drop support for PHP 7.3
+- Chores: remove Travis integration
 
+## [0.4.0] - 2020-12-17
 
-0.2.1
------
+- Add support for PHP 8
+- Drop support for PHP 7.2
+- Chores: Travis integration update
 
-* fix a bug where patterns were empty
+## [0.3.0] - 2020-04-27
 
-0.2.0
------
+- Add support for symfony console / finder 5.*
+- Drop compatibility for PHP <7.2 and eol symfony versions
+- Update test frameworks to latest versions
 
-* validate xml files against XSD schemata (with skip option)
-* pattern option
+## [0.2.4] - 2018-03-22
 
+- update dependencies to symfony/finder & symfony/console (include 4.*)
 
-0.1.0
------
+## [0.2.3] - 2017-04-04
 
-* cli interface
-* lint xml file
-* lint files in a directory
-* recursive option (default is 'yes')
-* exclude option
+- clean up composer file (move tests to autoload-dev)
+
+## [0.2.2] - 2016-03-17
+
+- update dependencies to symfony/finder & symfony/console
+
+## [0.2.1] - 2015-12-03
+
+- fix a bug where patterns were empty
+
+## [0.2.0] - 2015-12-03
+
+- validate xml files against XSD schemata (with skip option)
+- pattern option
+
+## [0.1.0] - 2015-11-20
+
+- cli interface
+- lint xml file
+- lint files in a directory
+- recursive option (default is 'yes')
+- exclude option
+
+[1.0.0]: https://github.com/sclable/xml-lint/compare/0.9.0...1.0.0
+[0.9.0]: https://github.com/sclable/xml-lint/compare/0.8.0...0.9.0
+[0.8.0]: https://github.com/sclable/xml-lint/compare/0.7.0...0.8.0
+[0.7.0]: https://github.com/sclable/xml-lint/compare/0.6.0...0.7.0
+[0.6.0]: https://github.com/sclable/xml-lint/compare/0.5.0...0.6.0
+[0.5.0]: https://github.com/sclable/xml-lint/compare/0.4.0...0.5.0
+[0.4.0]: https://github.com/sclable/xml-lint/compare/0.3.0...0.4.0
+[0.3.0]: https://github.com/sclable/xml-lint/compare/0.2.4...0.3.0
+[0.2.4]: https://github.com/sclable/xml-lint/compare/0.2.3...0.2.4
+[0.2.3]: https://github.com/sclable/xml-lint/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/sclable/xml-lint/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/sclable/xml-lint/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/sclable/xml-lint/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/sclable/xml-lint/releases/tag/0.1.0

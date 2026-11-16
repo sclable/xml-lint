@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2025 Sclable Business Solutions GmbH
+ * @copyright (c) 2015-present Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,34 +13,32 @@
 
 namespace sclable\xmlLint\tests\functional\contexts;
 
+use Behat\Step\Then;
+use Behat\Step\When;
+use Behat\Step\Given;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Symfony\Component\Console\Tester\CommandTester;
 use sclable\xmlLint\console\application\Application;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext
+class FeatureContext implements Context
 {
-    /** @var Application */
-    protected $application;
+    private Application $application;
 
-    /** @var CommandTester */
-    protected $commandTester;
+    private CommandTester $commandTester;
 
-    /** @var int the exit code */
-    protected $exitCode;
+    private ?int $exitCode = null;
 
-    /** @var string */
-    protected $file;
+    private string $file;
 
     /**
      * Initializes context.
      *
      * Every scenario gets its own context instance.
      * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
+     * context constructor through behat.php.
      */
     public function __construct()
     {
@@ -49,18 +49,14 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $this->commandTester = new CommandTester($command);
     }
 
-    /**
-     * @Given the file :file
-     */
-    public function theFile($file)
+    #[Given('the file :file')]
+    public function theFile(string $file): void
     {
         $this->file = dirname(__DIR__) . '/_testdata/' . $file;
     }
 
-    /**
-     * @When I run lint
-     */
-    public function iRunLint()
+    #[When('I run lint')]
+    public function iRunLint(): void
     {
         $this->exitCode = $this->commandTester->execute([
             'file' => $this->file,
@@ -68,11 +64,10 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I have a return code :code
-     *
      * @throws \Exception
      */
-    public function iHaveAReturnCode($code)
+    #[Then('I have a return code :code')]
+    public function iHaveAReturnCode(string $code): void
     {
         $code = (int) $code;
 

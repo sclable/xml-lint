@@ -1,4 +1,4 @@
-ARG PHP_VERSION
+ARG PHP_VERSION=8.4
 FROM php:${PHP_VERSION}-cli-alpine AS dependencies
 ARG PHP_CS_FIXER
 RUN apk add --update --no-cache zip unzip php-zip
@@ -40,7 +40,7 @@ RUN rm -rf tools/ tests/ \
 FROM php:${PHP_VERSION}-cli-alpine AS production
 WORKDIR /usr/src/xml-lint
 COPY --from=build_production /usr/src/xml-lint ./
-RUN ln -s /usr/src/xml-lint/bin/xmllint /usr/bin/xml-lint
+RUN ln -s /usr/src/xml-lint/bin/xml-lint /usr/bin/xml-lint
 WORKDIR /usr/src
-ENTRYPOINT ["php", "/usr/src/xml-lint/bin/xmllint"]
+ENTRYPOINT ["php", "/usr/src/xml-lint/bin/xml-lint"]
 CMD ["--help"]

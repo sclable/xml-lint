@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2025 Sclable Business Solutions GmbH
+ * @copyright (c) 2015-present Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,44 +14,27 @@
 namespace sclable\xmlLint\data;
 
 /**
- * Class FileReport.
+ * @internal
  */
-class FileReport
+final class FileReport
 {
-    /** @var \SplFileInfo */
-    private $file;
+    /** @var list<ValidationProblem> */
+    private array $problems = [];
 
-    /** @var ValidationProblem[] */
-    private $problems = [];
-
-    /**
-     * FileReport constructor.
-     */
-    public function __construct(\SplFileInfo $file)
+    public function __construct(private readonly \SplFileInfo $file)
     {
-        $this->file = $file;
     }
 
-    /**
-     * @param \SplFileInfo|string $file
-     *
-     * @return static
-     */
-    public static function create($file)
+    public static function create(\SplFileInfo|string $file): self
     {
-        if (false === ($file instanceof \SplFileInfo)) {
+        if (is_string($file)) {
             $file = new \SplFileInfo($file);
         }
 
-        return new static($file);
+        return new self($file);
     }
 
-    /**
-     * @param string $msg
-     *
-     * @return $this
-     */
-    public function reportProblem($msg)
+    public function reportProblem(string $msg): self
     {
         $this->addProblem(ValidationProblem::create($msg));
 
@@ -58,10 +43,8 @@ class FileReport
 
     /**
      * report a problem to a file.
-     *
-     * @return $this
      */
-    public function addProblem(ValidationProblem $problem)
+    public function addProblem(ValidationProblem $problem): self
     {
         $this->problems[] = $problem;
 
@@ -70,26 +53,21 @@ class FileReport
 
     /**
      * indicate whether a file has any reported problems or not.
-     *
-     * @return bool
      */
-    public function hasProblems()
+    public function hasProblems(): bool
     {
-        return !empty($this->problems);
+        return [] !== $this->problems;
     }
 
-    /**
-     * @return \SplFileInfo
-     */
-    public function getFile()
+    public function getFile(): \SplFileInfo
     {
         return $this->file;
     }
 
     /**
-     * @return ValidationProblem[]
+     * @return list<ValidationProblem>
      */
-    public function getProblems()
+    public function getProblems(): array
     {
         return $this->problems;
     }

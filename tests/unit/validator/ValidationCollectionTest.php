@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2025 Sclable Business Solutions GmbH
+ * @copyright (c) 2015-present Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +15,7 @@ namespace sclable\xmlLint\tests\unit\validator;
 
 use PHPUnit\Framework\TestCase;
 use sclable\xmlLint\data\FileReport;
+use PHPUnit\Framework\Attributes\DataProvider;
 use sclable\xmlLint\validator\ValidationInterface;
 use sclable\xmlLint\validator\ValidationCollection;
 
@@ -21,19 +24,11 @@ use sclable\xmlLint\validator\ValidationCollection;
  */
 class ValidationCollectionTest extends TestCase
 {
-    /**
-     * @dataProvider getMockReturnValues
-     *
-     * @param bool $return1
-     * @param bool $return2
-     * @param bool $expected
-     */
-    public function testCollectionCorrectReturnValue($return1, $return2, $expected)
+    #[DataProvider('getMockReturnValues')]
+    public function testCollectionCorrectReturnValue(bool $return1, bool $return2, bool $expected): void
     {
-        $mock1 = $this->getMockBuilder(ValidationInterface::class)
-            ->getMock();
-        $mock2 = $this->getMockBuilder(ValidationInterface::class)
-            ->getMock();
+        $mock1 = $this->createStub(ValidationInterface::class);
+        $mock2 = $this->createStub(ValidationInterface::class);
 
         $mock1->method('validateFile')
             ->willReturn($return1);
@@ -41,15 +36,16 @@ class ValidationCollectionTest extends TestCase
             ->willReturn($return2);
 
         $collection = new ValidationCollection();
-        /* @var ValidationInterface $mock1 */
-        /* @var ValidationInterface $mock2 */
         $collection->addValidation($mock1)
             ->addValidation($mock2);
 
-        $this->assertEquals($expected, $collection->validateFile(FileReport::create('some_file.xml')));
+        $this->assertSame($expected, $collection->validateFile(FileReport::create('some_file.xml')));
     }
 
-    public static function getMockReturnValues()
+    /**
+     * @return list<array{bool, bool, bool}>
+     */
+    public static function getMockReturnValues(): array
     {
         return [
             [true, true, true],
