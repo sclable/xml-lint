@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace sclable\xmlLint\console\application;
 
+use Composer\InstalledVersions;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use sclable\xmlLint\console\command\LintCommand;
@@ -27,13 +28,25 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Application extends \Symfony\Component\Console\Application
 {
-    public const VERSION = 'dev';
+    public const PACKAGE = 'sclable/xml-lint';
     public const NAME = 'Sclable Xml Lint';
 
     public function __construct()
     {
-        parent::__construct(self::NAME, self::VERSION);
+        parent::__construct(self::NAME, self::version());
         $this->setDefaultCommand(LintCommand::COMMAND_NAME);
+    }
+
+    private static function version(): string
+    {
+        if (!InstalledVersions::isInstalled(self::PACKAGE)) {
+            return 'dev';
+        }
+
+        $version = InstalledVersions::getPrettyVersion(self::PACKAGE) ?? 'dev';
+
+        // Composer's placeholder when the root package has no VCS metadata, e.g. in Docker builds
+        return str_ends_with($version, '+no-version-set') ? 'dev' : $version;
     }
 
     protected function getDefaultCommands(): array
