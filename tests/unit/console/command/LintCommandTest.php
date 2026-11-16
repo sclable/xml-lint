@@ -74,6 +74,14 @@ class LintCommandTest extends TestCase
         $this->assertStringContainsString($expectedFiles . ' files /', $tester->getDisplay());
     }
 
+    public function testExcludeTrimsPathsAndIgnoresEmptyOnes(): void
+    {
+        $tester = $this->execute(['file' => self::TREE, '--exclude' => 'sub, other,']);
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertStringContainsString('1 files /', $tester->getDisplay());
+    }
+
     public function testRejectsInvalidRecursiveValue(): void
     {
         $this->expectException(InvalidOptionException::class);

@@ -160,8 +160,11 @@ class LintCommand extends Command
             $finder->depth(0);
         }
 
-        if ($this->input->hasOption(self::OPTION_EXCLUDE)) {
-            $exclude = explode(',', (string) $this->input->getOption(self::OPTION_EXCLUDE));
+        $exclude = array_filter(
+            array_map('trim', explode(',', (string) $this->input->getOption(self::OPTION_EXCLUDE))),
+            static fn (string $path): bool => '' !== $path
+        );
+        if ([] !== $exclude) {
             $finder->exclude($exclude);
         }
 
