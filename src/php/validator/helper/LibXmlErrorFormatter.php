@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace sclable\xmlLint\validator\helper;
 
 /**
- * Class LibXmlErrorFormatter.
+ * @internal
  */
-class LibXmlErrorFormatter
+final class LibXmlErrorFormatter
 {
     private string $format = 'Line %s: [%s] %s';
 
@@ -45,7 +45,7 @@ class LibXmlErrorFormatter
         );
     }
 
-    public function setFormat(string $format): static
+    public function setFormat(string $format): self
     {
         $this->format = $format;
 

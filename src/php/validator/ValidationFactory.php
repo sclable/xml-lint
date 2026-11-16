@@ -16,9 +16,9 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class ValidationFactory.
+ * @internal
  */
-class ValidationFactory
+final class ValidationFactory
 {
     public static function createDefaultCollection(): ValidationInterface
     {

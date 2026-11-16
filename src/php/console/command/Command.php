@@ -16,9 +16,9 @@ namespace sclable\xmlLint\console\command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 
 /**
- * Class Command.
+ * @internal
  */
-class Command extends BaseCommand
+abstract class Command extends BaseCommand
 {
     /** @var array<string, string> local synopsis runtime cache */
     private array $synopsis = [];

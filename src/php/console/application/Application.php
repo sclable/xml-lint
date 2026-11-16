@@ -22,11 +22,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Application.
+ * @internal
  *
  * customized console application for Xml Lint
  */
-class Application extends \Symfony\Component\Console\Application
+final class Application extends \Symfony\Component\Console\Application
 {
     public const PACKAGE = 'sclable/xml-lint';
     public const NAME = 'Sclable Xml Lint';

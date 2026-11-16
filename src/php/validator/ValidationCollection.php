@@ -16,9 +16,9 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\data\FileReport;
 
 /**
- * Class ValidationCollection.
+ * @internal
  */
-class ValidationCollection implements ValidationInterface
+final class ValidationCollection implements ValidationInterface
 {
     /** @var list<ValidationInterface> */
     private array $collection = [];
@@ -33,7 +33,7 @@ class ValidationCollection implements ValidationInterface
         return $status;
     }
 
-    public function addValidation(ValidationInterface $validation): static
+    public function addValidation(ValidationInterface $validation): self
     {
         $this->collection[] = $validation;
 

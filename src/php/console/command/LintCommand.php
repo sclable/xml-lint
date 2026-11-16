@@ -25,13 +25,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
- * Class LintCommand.
+ * @internal
  *
  * @const string COMMAND_NAME the name of the command
  * @const string ARGUMENT_FILE the name of the file argument
  * @const string OPTION_RECURSIVE the name of the recursive option
  */
-class LintCommand extends Command
+final class LintCommand extends Command
 {
     public const COMMAND_NAME = 'lint';
     public const ARGUMENT_FILE = 'file';

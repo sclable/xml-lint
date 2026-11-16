@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace sclable\xmlLint\data;
 
 /**
- * Class ValidationProblem.
+ * @internal
  */
-class ValidationProblem
+final class ValidationProblem
 {
     /**
      * factory method to create a validation problem.
      */
-    public static function create(string $message): static
+    public static function create(string $message): self
     {
-        return new static($message);
+        return new self($message);
     }
 
     public function __construct(private readonly string $message)

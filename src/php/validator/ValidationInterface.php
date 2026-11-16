@@ -16,7 +16,7 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\data\FileReport;
 
 /**
- * Interface ValidationInterface.
+ * @internal
  */
 interface ValidationInterface
 {

@@ -17,9 +17,9 @@ use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class LintValidation.
+ * @internal
  */
-class LintValidation implements ValidationInterface
+final class LintValidation implements ValidationInterface
 {
     public function __construct(private readonly LibXmlErrorFormatter $formatter)
     {

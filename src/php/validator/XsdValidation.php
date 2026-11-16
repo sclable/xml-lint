@@ -17,9 +17,9 @@ use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class XsdValidation.
+ * @internal
  */
-class XsdValidation implements ValidationInterface
+final class XsdValidation implements ValidationInterface
 {
     /** @var array<string, string> */
     private array $cache = [];

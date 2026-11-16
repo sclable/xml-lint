@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace sclable\xmlLint\data;
 
 /**
- * Class FileReport.
+ * @internal
  */
-class FileReport
+final class FileReport
 {
     /** @var list<ValidationProblem> */
     private array $problems = [];
@@ -25,16 +25,16 @@ class FileReport
     {
     }
 
-    public static function create(\SplFileInfo|string $file): static
+    public static function create(\SplFileInfo|string $file): self
     {
         if (is_string($file)) {
             $file = new \SplFileInfo($file);
         }
 
-        return new static($file);
+        return new self($file);
     }
 
-    public function reportProblem(string $msg): static
+    public function reportProblem(string $msg): self
     {
         $this->addProblem(ValidationProblem::create($msg));
 
@@ -44,7 +44,7 @@ class FileReport
     /**
      * report a problem to a file.
      */
-    public function addProblem(ValidationProblem $problem): static
+    public function addProblem(ValidationProblem $problem): self
     {
         $this->problems[] = $problem;
 
