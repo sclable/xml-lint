@@ -30,7 +30,7 @@ class ValidationCollectionTest extends TestCase
      * @param bool $expected
      */
     #[DataProvider('getMockReturnValues')]
-    public function testCollectionCorrectReturnValue($return1, $return2, $expected)
+    public function testCollectionCorrectReturnValue($return1, $return2, $expected): void
     {
         $mock1 = $this->createStub(ValidationInterface::class);
         $mock2 = $this->createStub(ValidationInterface::class);

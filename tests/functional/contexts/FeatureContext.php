@@ -54,13 +54,13 @@ class FeatureContext implements Context
     }
 
     #[Given('the file :file')]
-    public function theFile($file)
+    public function theFile($file): void
     {
         $this->file = dirname(__DIR__) . '/_testdata/' . $file;
     }
 
     #[When('I run lint')]
-    public function iRunLint()
+    public function iRunLint(): void
     {
         $this->exitCode = $this->commandTester->execute([
             'file' => $this->file,
@@ -71,7 +71,7 @@ class FeatureContext implements Context
      * @throws \Exception
      */
     #[Then('I have a return code :code')]
-    public function iHaveAReturnCode($code)
+    public function iHaveAReturnCode($code): void
     {
         $code = (int) $code;
 

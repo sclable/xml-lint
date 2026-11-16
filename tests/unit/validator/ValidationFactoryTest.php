@@ -22,7 +22,7 @@ use sclable\xmlLint\validator\ValidationInterface;
  */
 class ValidationFactoryTest extends TestCase
 {
-    public function testDefaultCollection()
+    public function testDefaultCollection(): void
     {
         $collection = ValidationFactory::createDefaultCollection();
         $this->assertInstanceOf(ValidationInterface::class, $collection);

@@ -22,13 +22,13 @@ use sclable\xmlLint\data\ValidationProblem;
  */
 class FileReportTest extends TestCase
 {
-    public function testHasProblemsReturnsFalseOnNoProblems()
+    public function testHasProblemsReturnsFalseOnNoProblems(): void
     {
         $report = new FileReport(new \SplFileInfo('no_file.xml'));
         $this->assertFalse($report->hasProblems());
     }
 
-    public function testHasProblemsReturnsTrueOnProblems()
+    public function testHasProblemsReturnsTrueOnProblems(): void
     {
         $report = new FileReport(new \SplFileInfo('no_file.xml'));
         $problem = new ValidationProblem('my problem');
@@ -37,13 +37,13 @@ class FileReportTest extends TestCase
         $this->assertTrue($report->hasProblems());
     }
 
-    public function testCreateFromString()
+    public function testCreateFromString(): void
     {
         $report = FileReport::create('no_file.xml');
         $this->assertInstanceOf(FileReport::class, $report);
     }
 
-    public function testReportProblemCreatesValidationProblem()
+    public function testReportProblemCreatesValidationProblem(): void
     {
         $report = FileReport::create('test_file.xml');
         $report->reportProblem('my_message');

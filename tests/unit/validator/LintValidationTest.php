@@ -23,7 +23,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  */
 class LintValidationTest extends TestCase
 {
-    public function testNoValidationProblemsForIntactFile()
+    public function testNoValidationProblemsForIntactFile(): void
     {
         $validator = new LintValidation(new LibXmlErrorFormatter());
 
@@ -36,7 +36,7 @@ class LintValidationTest extends TestCase
         $this->assertSame([], self::messages($report));
     }
 
-    public function testReportProblemsForInvalidFile()
+    public function testReportProblemsForInvalidFile(): void
     {
         $validator = new LintValidation(new LibXmlErrorFormatter());
 
@@ -49,7 +49,7 @@ class LintValidationTest extends TestCase
         $this->assertGreaterThanOrEqual(2, count(self::messages($report)));
     }
 
-    public function testReportExceptionTextIfNoErrorsAvailable()
+    public function testReportExceptionTextIfNoErrorsAvailable(): void
     {
         $validator = new LintValidation(new LibXmlErrorFormatter());
 
@@ -61,7 +61,7 @@ class LintValidationTest extends TestCase
         $this->assertSame(['file not found: does_not_exist.xml'], self::messages($report));
     }
 
-    public function testReportXmlFileNotReadable()
+    public function testReportXmlFileNotReadable(): void
     {
         $validator = new LintValidation(new LibXmlErrorFormatter());
         $filename = dirname(dirname(__DIR__)) . '/functional/_testdata/fourtytwo.xml';

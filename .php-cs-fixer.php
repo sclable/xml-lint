@@ -35,7 +35,7 @@ $fixers = [
             'author',
         ],
     ],
-    'void_return' => false,
+    'void_return' => true,
     'single_trait_insert_per_statement' => false,
     'ternary_to_null_coalescing' => true,
     'pow_to_exponentiation' => false,

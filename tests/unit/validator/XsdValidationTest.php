@@ -25,7 +25,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 #[CoversClass(XsdValidation::class)]
 class XsdValidationTest extends TestCase
 {
-    public function testValidateIntactFileWithXsd()
+    public function testValidateIntactFileWithXsd(): void
     {
         $file = new \SplFileInfo(
             dirname(dirname(__DIR__)) . '/functional/_testdata/with_xsd.xml'
@@ -38,7 +38,7 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($report->hasProblems());
     }
 
-    public function testValidateCorruptFileWithXsd()
+    public function testValidateCorruptFileWithXsd(): void
     {
         $file = new \SplFileInfo(
             dirname(dirname(__DIR__)) . '/functional/_testdata/with_xsd_broken.xml'
@@ -51,7 +51,7 @@ class XsdValidationTest extends TestCase
         $this->assertTrue($report->hasProblems());
     }
 
-    public function testSkipNotExistingFile()
+    public function testSkipNotExistingFile(): void
     {
         $file = new \SplFileInfo('not_exists.xml');
 
@@ -62,7 +62,7 @@ class XsdValidationTest extends TestCase
         $this->assertSame([], self::messages($report));
     }
 
-    public function testSkipFileWithoutXsd()
+    public function testSkipFileWithoutXsd(): void
     {
         $file = new \SplFileInfo(
             dirname(dirname(__DIR__)) . '/functional/_testdata/fourtytwo.xml'
@@ -76,7 +76,7 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($report->hasProblems());
     }
 
-    public function testReportNonExistingSchemaFile()
+    public function testReportNonExistingSchemaFile(): void
     {
         $file = new \SplFileInfo(
             dirname(__DIR__) . '/_testdata/with_not_existing_xsd.xml'
@@ -92,7 +92,7 @@ class XsdValidationTest extends TestCase
         );
     }
 
-    public function testUseInternalCache()
+    public function testUseInternalCache(): void
     {
         $file = new \SplFileInfo(
             dirname(dirname(__DIR__)) . '/functional/_testdata/with_xsd.xml'
@@ -104,7 +104,7 @@ class XsdValidationTest extends TestCase
         $this->assertTrue($validator->validateFile($report));
     }
 
-    public function testEmptyXml()
+    public function testEmptyXml(): void
     {
         $file = new \SplFileInfo(
             dirname(__DIR__) . '/_testdata/empty.xml'
@@ -115,7 +115,7 @@ class XsdValidationTest extends TestCase
         $this->assertFalse($validator->validateFile($report));
     }
 
-    public function testEmptyXsd()
+    public function testEmptyXsd(): void
     {
         $file = new \SplFileInfo(
             dirname(__DIR__) . '/_testdata/with_empty_xsd.xml'
@@ -129,7 +129,7 @@ class XsdValidationTest extends TestCase
         $this->assertStringContainsString('xsd validation file is empty', self::messages($report)[0]);
     }
 
-    public function testDeadUrlXsd()
+    public function testDeadUrlXsd(): void
     {
         $file = new \SplFileInfo(
             dirname(__DIR__) . '/_testdata/with_bad_url_xsd.xml'

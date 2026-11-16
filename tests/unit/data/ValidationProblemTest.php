@@ -21,7 +21,7 @@ use sclable\xmlLint\data\ValidationProblem;
  */
 class ValidationProblemTest extends TestCase
 {
-    public function testCreateProblem()
+    public function testCreateProblem(): void
     {
         $msg = 'my message';
         $problem = ValidationProblem::create($msg);
