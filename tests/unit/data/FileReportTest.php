@@ -31,7 +31,7 @@ class FileReportTest extends TestCase
     public function testHasProblemsReturnsTrueOnProblems()
     {
         $report = new FileReport(new \SplFileInfo('no_file.xml'));
-        $problem = $this->createStub(ValidationProblem::class);
+        $problem = new ValidationProblem('my problem');
 
         $report->addProblem($problem);
         $this->assertTrue($report->hasProblems());

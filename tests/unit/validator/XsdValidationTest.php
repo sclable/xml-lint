@@ -55,16 +55,11 @@ class XsdValidationTest extends TestCase
     {
         $file = new \SplFileInfo('not_exists.xml');
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->expects($this->exactly(0))
-            ->method('reportProblem');
+        $report = new FileReport($file);
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /* @var FileReport $mock */
-        $this->assertFalse($validator->validateFile($mock));
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertSame([], self::messages($report));
     }
 
     public function testSkipFileWithoutXsd()
@@ -87,21 +82,14 @@ class XsdValidationTest extends TestCase
             dirname(__DIR__) . '/_testdata/with_not_existing_xsd.xml'
         );
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem', 'hasProblems'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->once())
-            ->method('reportProblem')
-            ->with(
-                'unable to validate, schema file is not readable: '
-                . dirname(__DIR__) . '/_testdata/i_dont_exist.xsd'
-            );
+        $report = new FileReport($file);
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /* @var FileReport $mock */
-        $this->assertFalse($validator->validateFile($mock));
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertSame(
+            ['unable to validate, schema file is not readable: ' . dirname(__DIR__) . '/_testdata/i_dont_exist.xsd'],
+            self::messages($report)
+        );
     }
 
     public function testUseInternalCache()
@@ -133,18 +121,12 @@ class XsdValidationTest extends TestCase
             dirname(__DIR__) . '/_testdata/with_empty_xsd.xml'
         );
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem', 'hasProblems'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->once())
-            ->method('reportProblem')
-            ->with($this->stringContains('xsd validation file is empty'));
+        $report = new FileReport($file);
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /* @var FileReport $mock */
-        $this->assertFalse($validator->validateFile($mock));
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertCount(1, self::messages($report));
+        $this->assertStringContainsString('xsd validation file is empty', self::messages($report)[0]);
     }
 
     public function testDeadUrlXsd()
@@ -153,17 +135,19 @@ class XsdValidationTest extends TestCase
             dirname(__DIR__) . '/_testdata/with_bad_url_xsd.xml'
         );
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem', 'hasProblems'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->once())
-            ->method('reportProblem')
-            ->with($this->stringContains('unable to load schema file from'));
+        $report = new FileReport($file);
 
         $validator = new XsdValidation(new LibXmlErrorFormatter());
-        /* @var FileReport $mock */
-        $this->assertFalse($validator->validateFile($mock));
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertCount(1, self::messages($report));
+        $this->assertStringContainsString('unable to load schema file from', self::messages($report)[0]);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function messages(FileReport $report): array
+    {
+        return array_map(static fn ($problem) => $problem->getMessage(), $report->getProblems());
     }
 }

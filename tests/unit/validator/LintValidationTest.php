@@ -30,16 +30,10 @@ class LintValidationTest extends TestCase
         $filename = dirname(dirname(__DIR__)) . '/functional/_testdata/fourtytwo.xml';
         $file = new \SplFileInfo($filename);
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->expects($this->exactly(0))
-            ->method('reportProblem');
+        $report = new FileReport($file);
 
-        /** @var FileReport $mock */
-        $return = $validator->validateFile($mock);
-        $this->assertTrue($return);
+        $this->assertTrue($validator->validateFile($report));
+        $this->assertSame([], self::messages($report));
     }
 
     public function testReportProblemsForInvalidFile()
@@ -49,17 +43,10 @@ class LintValidationTest extends TestCase
         $filename = dirname(dirname(__DIR__)) . '/functional/_testdata/broken.xml';
         $file = new \SplFileInfo($filename);
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem', 'hasProblems'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->atLeast(2))
-            ->method('reportProblem');
+        $report = new FileReport($file);
 
-        /** @var FileReport $mock */
-        $return = $validator->validateFile($mock);
-        $this->assertFalse($return);
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertGreaterThanOrEqual(2, count(self::messages($report)));
     }
 
     public function testReportExceptionTextIfNoErrorsAvailable()
@@ -68,17 +55,10 @@ class LintValidationTest extends TestCase
 
         $file = new \SplFileInfo('does_not_exist.xml');
 
-        $mock = $this->getMockBuilder(FileReport::class)
-            ->onlyMethods(['reportProblem'])
-            ->setConstructorArgs([$file])
-            ->getMock();
-        $mock->expects($this->once())
-            ->method('reportProblem')
-            ->with('file not found: does_not_exist.xml');
+        $report = new FileReport($file);
 
-        /** @var FileReport $mock */
-        $return = $validator->validateFile($mock);
-        $this->assertFalse($return);
+        $this->assertFalse($validator->validateFile($report));
+        $this->assertSame(['file not found: does_not_exist.xml'], self::messages($report));
     }
 
     public function testReportXmlFileNotReadable()
@@ -89,19 +69,20 @@ class LintValidationTest extends TestCase
         $fileMod = $file->getPerms();
         try {
             chmod($filename, 0o333);
-            $mock = $this->getMockBuilder(FileReport::class)
-                ->onlyMethods(['reportProblem'])
-                ->setConstructorArgs([$file])
-                ->getMock();
-            $mock->expects($this->once())
-                ->method('reportProblem')
-                ->with('file not readable: ' . $file->getRealPath());
+            $report = new FileReport($file);
 
-            /** @var FileReport $mock */
-            $return = $validator->validateFile($mock);
-            $this->assertFalse($return);
+            $this->assertFalse($validator->validateFile($report));
+            $this->assertSame(['file not readable: ' . $file->getRealPath()], self::messages($report));
         } finally {
             chmod($filename, $fileMod);
         }
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function messages(FileReport $report): array
+    {
+        return array_map(static fn ($problem) => $problem->getMessage(), $report->getProblems());
     }
 }
