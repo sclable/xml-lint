@@ -9,7 +9,7 @@ updates:
     labels: [dependencies, php]
 
   - package-ecosystem: composer
-    directory: /tools/php-cs-fixer
+    directories: [/tools/php-cs-fixer, /tools/phpstan]
     schedule:
       interval: weekly
     commit-message:
