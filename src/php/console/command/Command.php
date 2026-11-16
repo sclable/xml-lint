@@ -23,9 +23,6 @@ abstract class Command extends BaseCommand
     /** @var array<string, string> local synopsis runtime cache */
     private array $synopsis = [];
 
-    /**
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
     public function getSynopsis(bool $short = false): string
     {
         $key = $short ? 'short' : 'long';
@@ -33,7 +30,7 @@ abstract class Command extends BaseCommand
         if (!isset($this->synopsis[$key])) {
             $this->synopsis[$key] = trim(sprintf(
                 '%s %s',
-                $_SERVER['PHP_SELF'],
+                is_string($_SERVER['PHP_SELF'] ?? null) ? $_SERVER['PHP_SELF'] : $this->getName(),
                 $this->getDefinition()->getSynopsis($short)
             ));
         }

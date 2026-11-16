@@ -101,7 +101,7 @@ final class LintCommand extends Command
             $this->validator = ValidationFactory::createDefaultCollection();
         }
 
-        $file = (string) $input->getArgument(self::ARGUMENT_FILE);
+        $file = self::string($input->getArgument(self::ARGUMENT_FILE));
 
         $output->writeln('progress: ');
         if (is_dir($file)) {
@@ -134,7 +134,7 @@ final class LintCommand extends Command
         $finder->files()
             ->in($dir);
 
-        $patterns = (string) $this->input->getOption(self::OPTION_PATTERN);
+        $patterns = self::string($this->input->getOption(self::OPTION_PATTERN));
         if ('' !== $patterns) {
             foreach (explode(',', $patterns) as $pattern) {
                 $finder->name(trim($pattern));
@@ -149,7 +149,7 @@ final class LintCommand extends Command
         }
 
         $exclude = array_filter(
-            array_map('trim', explode(',', (string) $this->input->getOption(self::OPTION_EXCLUDE))),
+            array_map('trim', explode(',', self::string($this->input->getOption(self::OPTION_EXCLUDE)))),
             static fn (string $path): bool => '' !== $path
         );
         if ([] !== $exclude) {
@@ -183,7 +183,8 @@ final class LintCommand extends Command
     {
         $value = $this->input->getOption(self::OPTION_RECURSIVE);
 
-        if (null === $value || true === $value) {
+        // null for a bare option, true for the default
+        if (!is_string($value)) {
             return true;
         }
 
@@ -194,6 +195,11 @@ final class LintCommand extends Command
         }
 
         return $recursive;
+    }
+
+    private static function string(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
     }
 
     /**
