@@ -43,15 +43,34 @@ To lint a directory and all its subdirectories:
 Development
 -----------
 
+### Install
+
+```shell
+composer install
+composer install --working-dir=tools/php-cs-fixer
+```
+
+### Code style
+
+```shell
+# check
+composer cs
+
+# fix
+composer cs:fix
+```
+
 ### Run tests
 
 ```shell
-# check code style
-php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run -v
+# all tests
+composer test
 
-# run tests
-php vendor/bin/phpunit
-php vendor/bin/behat
+# unit tests (PHPUnit)
+composer test:unit
+
+# functional tests (Behat)
+composer test:functional
 ```
 
 Using docker:

@@ -19,6 +19,11 @@
         "xsd",
         "xml schema"
     ],
+    "homepage": "https://github.com/sclable/xml-lint",
+    "support": {
+        "issues": "https://github.com/sclable/xml-lint/issues",
+        "source": "https://github.com/sclable/xml-lint"
+    },
     "bin": [
         "bin/xmllint"
     ],
@@ -42,5 +47,18 @@
         "psr-4": {
             "sclable\\xmlLint\\tests\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": [
+            "@test:unit",
+            "@test:functional"
+        ],
+        "test:unit": "phpunit",
+        "test:functional": "behat --no-interaction",
+        "cs": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
     }
 }
