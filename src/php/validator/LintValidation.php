@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -15,28 +17,21 @@ use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class LintValidation.
+ * @internal
  */
-class LintValidation implements ValidationInterface
+final class LintValidation implements ValidationInterface
 {
-    /** @var LibXmlErrorFormatter */
-    private $formatter;
-
-    /**
-     * LintValidation constructor.
-     */
-    public function __construct(LibXmlErrorFormatter $formatter)
+    public function __construct(private readonly LibXmlErrorFormatter $formatter)
     {
-        $this->formatter = $formatter;
         libxml_use_internal_errors(true);
     }
 
-    public function validateFile(FileReport $report)
+    public function validateFile(FileReport $report): bool
     {
         $realPath = $report->getFile()->getRealPath();
 
-        if (false === is_file($realPath)) {
-            $report->reportProblem('file not found: ' . $realPath);
+        if (false === $realPath || false === is_file($realPath)) {
+            $report->reportProblem('file not found: ' . $report->getFile()->getPathname());
 
             return false;
         }

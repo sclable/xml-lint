@@ -1,0 +1,10 @@
+parameters:
+    level: max
+    paths:
+        - bin
+        - src
+        - tests
+    excludePaths:
+        - tests/*/_testdata/*
+    bootstrapFiles:
+        - vendor/autoload.php

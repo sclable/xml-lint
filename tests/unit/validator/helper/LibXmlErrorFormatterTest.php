@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -19,7 +21,7 @@ use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
  */
 class LibXmlErrorFormatterTest extends TestCase
 {
-    public function testFormatError()
+    public function testFormatError(): void
     {
         $errors = [$this->createLibXmlError('test', 1, 2)];
         $this->assertEquals(
@@ -30,7 +32,7 @@ class LibXmlErrorFormatterTest extends TestCase
         );
     }
 
-    public function testCustomFormatError()
+    public function testCustomFormatError(): void
     {
         $errors = [$this->createLibXmlError('test', 1, 2)];
         $formatter = new LibXmlErrorFormatter();
@@ -43,7 +45,7 @@ class LibXmlErrorFormatterTest extends TestCase
         );
     }
 
-    public function testFilterDuplicates()
+    public function testFilterDuplicates(): void
     {
         $errors = [
             $this->createLibXmlError('test', 1, 2),

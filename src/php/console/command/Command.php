@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -14,24 +16,21 @@ namespace sclable\xmlLint\console\command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 
 /**
- * Class Command.
+ * @internal
  */
-class Command extends BaseCommand
+abstract class Command extends BaseCommand
 {
-    /** @var array local synopsis runtime cache */
-    private $synopsis = [];
+    /** @var array<string, string> local synopsis runtime cache */
+    private array $synopsis = [];
 
-    /**
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public function getSynopsis($short = false): string
+    public function getSynopsis(bool $short = false): string
     {
         $key = $short ? 'short' : 'long';
 
         if (!isset($this->synopsis[$key])) {
             $this->synopsis[$key] = trim(sprintf(
                 '%s %s',
-                $_SERVER['PHP_SELF'],
+                is_string($_SERVER['PHP_SELF'] ?? null) ? $_SERVER['PHP_SELF'] : $this->getName(),
                 $this->getDefinition()->getSynopsis($short)
             ));
         }

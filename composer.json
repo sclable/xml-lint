@@ -25,7 +25,8 @@
         "source": "https://github.com/sclable/xml-lint"
     },
     "bin": [
-        "bin/xmllint"
+        "bin/xmllint",
+        "bin/xml-lint"
     ],
     "require": {
         "php": "^8.2",
@@ -59,6 +60,7 @@
         "test:unit": "phpunit",
         "test:functional": "behat --no-interaction",
         "cs": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff",
-        "cs:fix": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
+        "cs:fix": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse"
     }
 }

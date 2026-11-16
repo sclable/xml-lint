@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -14,14 +16,11 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class ValidationFactory.
+ * @internal
  */
-class ValidationFactory
+final class ValidationFactory
 {
-    /**
-     * @return ValidationInterface
-     */
-    public static function createDefaultCollection()
+    public static function createDefaultCollection(): ValidationInterface
     {
         $collection = new ValidationCollection();
 
@@ -33,10 +32,7 @@ class ValidationFactory
         return $collection;
     }
 
-    /**
-     * @return ValidationInterface
-     */
-    public static function createLintOnlyValidation()
+    public static function createLintOnlyValidation(): ValidationInterface
     {
         $formatter = new LibXmlErrorFormatter();
 

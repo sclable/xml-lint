@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -14,12 +16,9 @@ namespace sclable\xmlLint\validator;
 use sclable\xmlLint\data\FileReport;
 
 /**
- * Interface ValidationInterface.
+ * @internal
  */
 interface ValidationInterface
 {
-    /**
-     * @return bool
-     */
-    public function validateFile(FileReport $report);
+    public function validateFile(FileReport $report): bool;
 }

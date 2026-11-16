@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -23,17 +25,13 @@ use sclable\xmlLint\console\application\Application;
  */
 class FeatureContext implements Context
 {
-    /** @var Application */
-    protected $application;
+    private Application $application;
 
-    /** @var CommandTester */
-    protected $commandTester;
+    private CommandTester $commandTester;
 
-    /** @var int the exit code */
-    protected $exitCode;
+    private ?int $exitCode = null;
 
-    /** @var string */
-    protected $file;
+    private string $file;
 
     /**
      * Initializes context.
@@ -52,13 +50,13 @@ class FeatureContext implements Context
     }
 
     #[Given('the file :file')]
-    public function theFile($file)
+    public function theFile(string $file): void
     {
         $this->file = dirname(__DIR__) . '/_testdata/' . $file;
     }
 
     #[When('I run lint')]
-    public function iRunLint()
+    public function iRunLint(): void
     {
         $this->exitCode = $this->commandTester->execute([
             'file' => $this->file,
@@ -69,7 +67,7 @@ class FeatureContext implements Context
      * @throws \Exception
      */
     #[Then('I have a return code :code')]
-    public function iHaveAReturnCode($code)
+    public function iHaveAReturnCode(string $code): void
     {
         $code = (int) $code;
 

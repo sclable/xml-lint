@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -20,15 +22,16 @@ use sclable\xmlLint\validator\ValidationInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
- * Class LintCommand.
+ * @internal
  *
  * @const string COMMAND_NAME the name of the command
  * @const string ARGUMENT_FILE the name of the file argument
  * @const string OPTION_RECURSIVE the name of the recursive option
  */
-class LintCommand extends Command
+final class LintCommand extends Command
 {
     public const COMMAND_NAME = 'lint';
     public const ARGUMENT_FILE = 'file';
@@ -37,20 +40,14 @@ class LintCommand extends Command
     public const OPTION_PATTERN = 'pattern';
     public const OPTION_NO_XSD = 'skip-xsd';
 
-    /** @var OutputInterface */
-    protected $output;
+    private OutputInterface $output;
 
-    /** @var InputInterface */
-    protected $input;
+    private InputInterface $input;
 
-    /** @var ValidationInterface */
-    private $validator;
+    private ValidationInterface $validator;
 
-    /** @var FileReport[] */
-    private $reports = [];
-
-    /** @var float */
-    private $start;
+    /** @var list<FileReport> */
+    private array $reports = [];
 
     protected function configure(): void
     {
@@ -67,7 +64,7 @@ class LintCommand extends Command
                 self::OPTION_RECURSIVE,
                 'r',
                 InputOption::VALUE_OPTIONAL,
-                'Whether to scan directories recursive.',
+                'Whether to scan directories recursive (use 0, false, no or off to disable).',
                 true
             )
             ->addOption(
@@ -93,9 +90,10 @@ class LintCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->start = microtime(true);
+        $start = microtime(true);
         $this->output = $output;
         $this->input = $input;
+        $recursive = $this->isRecursive();
 
         if ($input->getOption(self::OPTION_NO_XSD)) {
             $this->validator = ValidationFactory::createLintOnlyValidation();
@@ -103,11 +101,11 @@ class LintCommand extends Command
             $this->validator = ValidationFactory::createDefaultCollection();
         }
 
-        $file = $input->getArgument(self::ARGUMENT_FILE);
+        $file = self::string($input->getArgument(self::ARGUMENT_FILE));
 
         $output->writeln('progress: ');
         if (is_dir($file)) {
-            $status = $this->lintDir($file);
+            $status = $this->lintDir($file, $recursive);
         } else {
             $status = $this->lintFile(new \SplFileInfo($file));
         }
@@ -121,7 +119,7 @@ class LintCommand extends Command
         $this->output->writeln(sprintf(
             PHP_EOL . '%d files / %1.2f seconds <info>done</info>',
             count($this->reports),
-            microtime(true) - $this->start
+            microtime(true) - $start
         ));
 
         return $status ? 0 : 1;
@@ -129,36 +127,20 @@ class LintCommand extends Command
 
     /**
      * lint the content of a directory, recursive if defined.
-     *
-     * @param string $dir path/to/dir
-     *
-     * @return bool
      */
-    private function lintDir($dir)
+    private function lintDir(string $dir, bool $recursive): bool
     {
         $finder = Finder::create();
         $finder->files()
             ->in($dir);
 
-        $patterns = $this->input->getOption(self::OPTION_PATTERN);
-        if (!empty($patterns)) {
-            $patterns = explode(',', $patterns);
-            foreach ($patterns as $pattern) {
-                $finder->name(trim($pattern));
-            }
-        } else {
-            $finder->name('*.xml.dist')
-                ->name('*.xml');
-        }
+        $finder->name($this->listOption(self::OPTION_PATTERN) ?: ['*.xml.dist', '*.xml']);
 
-        if (!$this->input->getOption(self::OPTION_RECURSIVE)) {
+        if (!$recursive) {
             $finder->depth(0);
         }
 
-        if ($this->input->hasOption(self::OPTION_EXCLUDE)) {
-            $exclude = explode(',', (string) $this->input->getOption(self::OPTION_EXCLUDE));
-            $finder->exclude($exclude);
-        }
+        $finder->exclude($this->listOption(self::OPTION_EXCLUDE));
 
         $totalFiles = $finder->count();
 
@@ -181,9 +163,47 @@ class LintCommand extends Command
     }
 
     /**
+     * a bare -r/--recursive enables recursion, a boolean-like value sets it.
+     */
+    private function isRecursive(): bool
+    {
+        $value = $this->input->getOption(self::OPTION_RECURSIVE);
+
+        // null for a bare option, true for the default
+        if (!is_string($value)) {
+            return true;
+        }
+
+        $recursive = filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+
+        if (null === $recursive) {
+            throw new InvalidOptionException(sprintf('The "--recursive" option expects a boolean value like 1 or 0, "%s" given.', $value));
+        }
+
+        return $recursive;
+    }
+
+    /**
+     * split a comma separated option into trimmed, non-empty values.
+     *
+     * @return list<string>
+     */
+    private function listOption(string $name): array
+    {
+        $values = array_map('trim', explode(',', self::string($this->input->getOption($name))));
+
+        return array_values(array_filter($values, static fn (string $value): bool => '' !== $value));
+    }
+
+    private static function string(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
+    }
+
+    /**
      * format and print the errors from the queue to the output.
      */
-    private function printReportsOfFilesWithProblems()
+    private function printReportsOfFilesWithProblems(): void
     {
         $this->output->writeln(PHP_EOL . '<error>errors:</error>');
 
@@ -193,7 +213,7 @@ class LintCommand extends Command
             }
 
             $file = $report->getFile();
-            $this->output->writeln('file: ' . $file->getPath() . DIRECTORY_SEPARATOR . $file->getFilename());
+            $this->output->writeln('file: ' . $file->getPathname());
 
             foreach ($report->getProblems() as $problem) {
                 $this->output->write(
@@ -207,10 +227,8 @@ class LintCommand extends Command
 
     /**
      * lint a file, pass errors to the queue.
-     *
-     * @return bool
      */
-    private function lintFile(\SplFileInfo $file)
+    private function lintFile(\SplFileInfo $file): bool
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->output->write('lint file ' . $file . ' ... ');

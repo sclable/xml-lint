@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -12,13 +14,18 @@
 namespace sclable\xmlLint\validator\helper;
 
 /**
- * Class LibXmlErrorFormatter.
+ * @internal
  */
-class LibXmlErrorFormatter
+final class LibXmlErrorFormatter
 {
-    private $format = 'Line %s: [%s] %s';
+    private string $format = 'Line %s: [%s] %s';
 
-    public function formatErrors(array $xmlErrors)
+    /**
+     * @param array<\LibXMLError> $xmlErrors
+     *
+     * @return array<string>
+     */
+    public function formatErrors(array $xmlErrors): array
     {
         $messages = [];
         foreach ($xmlErrors as $xmlError) {
@@ -28,7 +35,7 @@ class LibXmlErrorFormatter
         return array_unique($messages);
     }
 
-    private function format($xmlError)
+    private function format(\LibXMLError $xmlError): string
     {
         return sprintf(
             $this->format,
@@ -38,7 +45,7 @@ class LibXmlErrorFormatter
         );
     }
 
-    public function setFormat($format)
+    public function setFormat(string $format): self
     {
         $this->format = $format;
 

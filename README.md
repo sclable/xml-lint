@@ -48,6 +48,7 @@ Development
 ```shell
 composer install
 composer install --working-dir=tools/php-cs-fixer
+composer install --working-dir=tools/phpstan
 ```
 
 ### Code style
@@ -58,6 +59,12 @@ composer cs
 
 # fix
 composer cs:fix
+```
+
+### Static analysis
+
+```shell
+composer phpstan
 ```
 
 ### Run tests

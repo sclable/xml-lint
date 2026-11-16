@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -15,26 +17,19 @@ use sclable\xmlLint\data\FileReport;
 use sclable\xmlLint\validator\helper\LibXmlErrorFormatter;
 
 /**
- * Class XsdValidation.
+ * @internal
  */
-class XsdValidation implements ValidationInterface
+final class XsdValidation implements ValidationInterface
 {
-    /** @var LibXmlErrorFormatter */
-    private $formatter;
+    /** @var array<string, string> */
+    private array $cache = [];
 
-    /** @var array */
-    private $cache = [];
-
-    /**
-     * XsdValidation constructor.
-     */
-    public function __construct(LibXmlErrorFormatter $formatter)
+    public function __construct(private readonly LibXmlErrorFormatter $formatter)
     {
-        $this->formatter = $formatter;
         libxml_use_internal_errors(true);
     }
 
-    public function validateFile(FileReport $report)
+    public function validateFile(FileReport $report): bool
     {
         $file = $report->getFile()->getRealPath();
 
@@ -74,13 +69,7 @@ class XsdValidation implements ValidationInterface
         return true;
     }
 
-    /**
-     * @param string     $filename
-     * @param FileReport $report
-     *
-     * @return bool|string
-     */
-    private function getSchemaValidationSource($filename, $report)
+    private function getSchemaValidationSource(string $filename, FileReport $report): string|false
     {
         if (0 === preg_match('/^(http|https|ftp):/i', $filename)) {
             if (false === file_exists($filename)) {
@@ -114,10 +103,7 @@ class XsdValidation implements ValidationInterface
         return $this->cache[$filename] = $validationSource;
     }
 
-    /**
-     * @return bool|string
-     */
-    private function getSchemaValidationFile(\DOMDocument $document)
+    private function getSchemaValidationFile(\DOMDocument $document): string|false
     {
         $firstChild = $this->getFirstChild($document);
         // @codeCoverageIgnoreStart
@@ -135,10 +121,7 @@ class XsdValidation implements ValidationInterface
         return $attribute;
     }
 
-    /**
-     * @return bool|\DOMElement
-     */
-    private function getFirstChild(\DOMDocument $document)
+    private function getFirstChild(\DOMDocument $document): \DOMElement|false
     {
         foreach ($document->childNodes as $child) {
             if ($child instanceof \DOMElement) {

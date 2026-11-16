@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -20,7 +22,7 @@ use sclable\xmlLint\validator\ValidationInterface;
  */
 class ValidationFactoryTest extends TestCase
 {
-    public function testDefaultCollection()
+    public function testDefaultCollection(): void
     {
         $collection = ValidationFactory::createDefaultCollection();
         $this->assertInstanceOf(ValidationInterface::class, $collection);

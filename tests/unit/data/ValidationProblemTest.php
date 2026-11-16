@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
@@ -19,7 +21,7 @@ use sclable\xmlLint\data\ValidationProblem;
  */
 class ValidationProblemTest extends TestCase
 {
-    public function testCreateProblem()
+    public function testCreateProblem(): void
     {
         $msg = 'my message';
         $problem = ValidationProblem::create($msg);
