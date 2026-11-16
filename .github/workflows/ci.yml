@@ -17,13 +17,22 @@ concurrency:
 
 jobs:
   tests:
-    name: Tests (PHP ${{ matrix.php }}, ${{ matrix.dependencies }})
+    name: Tests (PHP ${{ matrix.php }}, ${{ matrix.dependencies }}${{ matrix.symfony && format(', Symfony {0}', matrix.symfony) || '' }})
     runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.2', '8.3', '8.4']
-        dependencies: [highest]
+        php: ['8.2', '8.3', '8.4', '8.5']
+        dependencies: [lowest, highest]
+        symfony: ['']
+        include:
+          # Composer picks Symfony 8 on PHP 8.4+, so test 7.4 there explicitly
+          - php: '8.4'
+            dependencies: highest
+            symfony: '7.4'
+          - php: '8.5'
+            dependencies: highest
+            symfony: '7.4'
     steps:
       - uses: actions/checkout@v7
 
@@ -34,6 +43,10 @@ jobs:
           coverage: none
 
       - run: composer validate --strict
+
+      - name: Pin Symfony ${{ matrix.symfony }}
+        if: matrix.symfony
+        run: composer require --no-update symfony/console:${{ matrix.symfony }}.* symfony/finder:${{ matrix.symfony }}.*
 
       - uses: ramsey/composer-install@v4
         with:
