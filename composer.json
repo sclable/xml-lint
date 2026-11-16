@@ -60,6 +60,7 @@
         "test:unit": "phpunit",
         "test:functional": "behat --no-interaction",
         "cs": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff",
-        "cs:fix": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
+        "cs:fix": "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse"
     }
 }
