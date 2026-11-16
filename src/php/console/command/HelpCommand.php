@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->ignoreValidationErrors();
 
