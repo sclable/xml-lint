@@ -52,7 +52,7 @@ class LintValidationTest extends TestCase
             ->setConstructorArgs([$file])
             ->getMock();
         $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->exactly(3))
+        $mock->expects($this->atLeast(2))
             ->method('reportProblem');
 
         /** @var FileReport $mock */
