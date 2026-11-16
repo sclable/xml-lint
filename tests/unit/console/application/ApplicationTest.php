@@ -17,6 +17,7 @@ use Composer\InstalledVersions;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use sclable\xmlLint\console\application\Application;
+use Symfony\Component\Console\Tester\ApplicationTester;
 
 #[CoversClass(Application::class)]
 class ApplicationTest extends TestCase
@@ -27,5 +28,40 @@ class ApplicationTest extends TestCase
             InstalledVersions::getPrettyVersion(Application::PACKAGE),
             (new Application())->getVersion()
         );
+    }
+
+    public function testTextHelpStartsWithTheVersion(): void
+    {
+        $tester = $this->runHelp(['--help' => true]);
+
+        $this->assertStringStartsWith(Application::NAME, $tester->getDisplay());
+    }
+
+    public function testJsonHelpIsValidJson(): void
+    {
+        $tester = $this->runHelp(['--help' => true, '--format' => 'json']);
+
+        $this->assertJson($tester->getDisplay());
+    }
+
+    public function testXmlHelpStartsWithTheXmlDeclaration(): void
+    {
+        $tester = $this->runHelp(['--help' => true, '--format' => 'xml']);
+
+        $this->assertStringStartsWith('<?xml', $tester->getDisplay());
+    }
+
+    /**
+     * @param array<string, bool|string> $input
+     */
+    private function runHelp(array $input): ApplicationTester
+    {
+        $application = new Application();
+        $application->setAutoExit(false);
+
+        $tester = new ApplicationTester($application);
+        $this->assertSame(0, $tester->run($input));
+
+        return $tester;
     }
 }

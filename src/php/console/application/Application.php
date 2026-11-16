@@ -58,10 +58,16 @@ final class Application extends \Symfony\Component\Console\Application
 
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output): int
     {
-        if ('version' != $command->getName()) {
+        if ('version' != $command->getName() && !self::isMachineReadableHelp($command, $input)) {
             $output->writeln($this->getLongVersion());
         }
 
         return parent::doRunCommand($command, $input, $output);
+    }
+
+    private static function isMachineReadableHelp(Command $command, InputInterface $input): bool
+    {
+        return $command instanceof HelpCommand
+            && 'txt' !== $input->getParameterOption('--format', 'txt', true);
     }
 }
