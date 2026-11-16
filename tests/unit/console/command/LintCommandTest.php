@@ -82,6 +82,14 @@ class LintCommandTest extends TestCase
         $this->assertStringContainsString('1 files /', $tester->getDisplay());
     }
 
+    public function testEmptyPatternFallsBackToXmlFiles(): void
+    {
+        $tester = $this->execute(['file' => self::TREE, '--pattern' => ' , ']);
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertStringContainsString('3 files /', $tester->getDisplay());
+    }
+
     public function testRejectsInvalidRecursiveValue(): void
     {
         $this->expectException(InvalidOptionException::class);

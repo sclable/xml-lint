@@ -134,27 +134,13 @@ final class LintCommand extends Command
         $finder->files()
             ->in($dir);
 
-        $patterns = self::string($this->input->getOption(self::OPTION_PATTERN));
-        if ('' !== $patterns) {
-            foreach (explode(',', $patterns) as $pattern) {
-                $finder->name(trim($pattern));
-            }
-        } else {
-            $finder->name('*.xml.dist')
-                ->name('*.xml');
-        }
+        $finder->name($this->listOption(self::OPTION_PATTERN) ?: ['*.xml.dist', '*.xml']);
 
         if (!$recursive) {
             $finder->depth(0);
         }
 
-        $exclude = array_filter(
-            array_map('trim', explode(',', self::string($this->input->getOption(self::OPTION_EXCLUDE)))),
-            static fn (string $path): bool => '' !== $path
-        );
-        if ([] !== $exclude) {
-            $finder->exclude($exclude);
-        }
+        $finder->exclude($this->listOption(self::OPTION_EXCLUDE));
 
         $totalFiles = $finder->count();
 
@@ -195,6 +181,18 @@ final class LintCommand extends Command
         }
 
         return $recursive;
+    }
+
+    /**
+     * split a comma separated option into trimmed, non-empty values.
+     *
+     * @return list<string>
+     */
+    private function listOption(string $name): array
+    {
+        $values = array_map('trim', explode(',', self::string($this->input->getOption($name))));
+
+        return array_values(array_filter($values, static fn (string $value): bool => '' !== $value));
     }
 
     private static function string(mixed $value): string
