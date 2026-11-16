@@ -125,7 +125,7 @@ docker run -it --rm -v "$PWD":/var/src -w /var/src xml-lint:php-8.4 -v .
 Changelog
 ---------
 
-For the changelog see the [CHANGELOG](CHANGELOG) file
+For the changelog see the [CHANGELOG](CHANGELOG.md) file
 
 License
 -------
