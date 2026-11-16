@@ -25,7 +25,8 @@
         "source": "https://github.com/sclable/xml-lint"
     },
     "bin": [
-        "bin/xmllint"
+        "bin/xmllint",
+        "bin/xml-lint"
     ],
     "require": {
         "php": "^8.2",
