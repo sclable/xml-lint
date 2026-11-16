@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'release/**']
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Tests (PHP ${{ matrix.php }}, ${{ matrix.dependencies }})
+    runs-on: ubuntu-26.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+        dependencies: [highest]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, libxml
+          coverage: none
+
+      - run: composer validate --strict
+
+      - uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - run: vendor/bin/phpunit
+      - run: vendor/bin/behat --no-interaction
+
+  coding-style:
+    name: Coding style
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - uses: ramsey/composer-install@v4
+        with:
+          working-directory: tools/php-cs-fixer
+
+      - run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  security:
+    name: Security audit
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: highest
+
+      - run: composer audit
+
+  install:
+    name: Install as dependency
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: xml-lint
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Require package in an empty project
+        run: |
+          mkdir project && cd project
+          composer init --no-interaction --name=test/project
+          composer config repositories.local '{"type": "path", "url": "../xml-lint", "options": {"symlink": false}}'
+          composer require --no-interaction --dev sclable/xml-lint:@dev
+
+      - name: Run installed binary
+        working-directory: project
+        run: |
+          data=../xml-lint/tests/functional/_testdata
+          vendor/bin/xmllint "$data/with_xsd.xml"
+          if vendor/bin/xmllint "$data/broken.xml"; then
+            echo "expected a failure for broken.xml" && exit 1
+          fi

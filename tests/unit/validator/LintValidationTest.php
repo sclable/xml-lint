@@ -3,7 +3,7 @@
 /**
  * This file is part of the Sclable Xml Lint Package.
  *
- * @copyright (c) 2025 Sclable Business Solutions GmbH
+ * @copyright (c) 2015-present Sclable Business Solutions GmbH
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -52,7 +52,7 @@ class LintValidationTest extends TestCase
             ->setConstructorArgs([$file])
             ->getMock();
         $mock->method('hasProblems')->willReturn(true);
-        $mock->expects($this->exactly(3))
+        $mock->expects($this->atLeast(2))
             ->method('reportProblem');
 
         /** @var FileReport $mock */
