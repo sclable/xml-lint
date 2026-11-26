@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Behat\Config\Suite;
 use Behat\Config\Config;
 use Behat\Config\Profile;
+use Behat\Config\TesterOptions;
 use sclable\xmlLint\tests\functional\contexts\FeatureContext;
 
 return (new Config())
@@ -24,4 +25,5 @@ return (new Config())
                     ->withPaths('%paths.base%/tests/functional')
                     ->withContexts(FeatureContext::class)
             )
+            ->withTesterOptions((new TesterOptions())->withErrorReporting(E_ALL))
     );
