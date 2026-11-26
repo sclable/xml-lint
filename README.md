@@ -107,11 +107,12 @@ Using docker:
 # Example
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" .
 
-# PHP_VERSION: choose between 8.2, 8.3, 8.4 and 8.5 (default: 8.4)
+# PHP_VERSION: choose between 8.2, 8.3, 8.4, 8.5 and 8.6 (default: 8.4)
 docker build -t xml-lint:php-8.2 --build-arg=PHP_VERSION="8.2" .
 docker build -t xml-lint:php-8.3 --build-arg=PHP_VERSION="8.3" .
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" .
 docker build -t xml-lint:php-8.5 --build-arg=PHP_VERSION="8.5" .
+docker build -t xml-lint:php-8.6 --build-arg=PHP_VERSION="8.6" .
 
 # Run with code style check
 docker build -t xml-lint:php-8.4 --build-arg=PHP_VERSION="8.4" --build-arg=PHP_CS_FIXER=true .
